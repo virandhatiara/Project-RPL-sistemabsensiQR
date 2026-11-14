@@ -1,0 +1,7 @@
+.env
+cookies.txt
+tmp_chatbot_cookie.txt
+*.log
+.vscode/
+.idea/
+

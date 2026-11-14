@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UML Use Case Diagram — Sistem Absensi SMK NU WARGABINANGUN</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f1f5f9;
+      margin: 0;
+      padding: 16px;
+    }
+    .svg-container {
+      width: 100%;
+      max-width: 1450px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      overflow-x: auto;
+    }
+    svg text {
+      user-select: none;
+    }
+    .uc-node {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .uc-node:hover ellipse {
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+      stroke-width: 2.5;
+    }
+    .actor-card {
+      transition: all 0.2s ease;
+    }
+    .actor-card:hover {
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12));
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+
+  <div class="svg-container p-3">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1460 970" width="100%" height="100%">
+      <defs>
+        <!-- Marker Panah Include / Extend -->
+        <marker id="arrow-include" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#3b82f6" />
+        </marker>
+        <marker id="arrow-extend" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#f59e0b" />
+        </marker>
+        <marker id="arrow-wa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#10b981" />
+        </marker>
+        <marker id="arrow-ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#ea580c" />
+        </marker>
+        <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08" />
+        </filter>
+      </defs>
+
+      <!-- ======================================================== -->
+      <!-- 1. HEADER BANNER UTAMA                                   -->
+      <!-- ======================================================== -->
+      <rect x="20" y="15" width="1420" height="58" rx="8" fill="#0f172a" />
+      <text x="730" y="38" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="800" letter-spacing="1">
+        USE CASE DIAGRAM — SISTEM INFORMASI PRESENSI &amp; ABSENSI SISWA &amp; GURU
+      </text>
+      <text x="730" y="58" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">
+        SMK NU WARGABINANGUN • Berbasis Web &amp; Scanner Barcode/QR • Integrasi AI Chatbot (LLM API) &amp; WhatsApp Gateway (Fonnte)
+      </text>
+
+      <!-- ======================================================== -->
+      <!-- 2. BATAS SISTEM (SYSTEM BOUNDARY)                        -->
+      <!-- ======================================================== -->
+      <rect x="180" y="88" width="1060" height="765" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)" />
+      
+      <!-- Label Header Batas Sistem -->
+      <rect x="180" y="88" width="410" height="28" rx="6" fill="#0284c7" />
+      <text x="195" y="107" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="0.5">
+        🔲 BATAS SISTEM: APLIKASI WEB SISTEM ABSENSI SMK NU WARGABINANGUN
+      </text>
+
+      <!-- ======================================================== -->
+      <!-- 3. AKTOR UTAMA (KIRI - HUMAN ACTORS)                     -->
+      <!-- ======================================================== -->
+
+      <!-- A. ACTOR ADMINISTRATOR -->
+      <g class="actor-card" id="actor-admin">
+        <rect x="20" y="130" width="140" height="175" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)" />
+        <circle cx="90" cy="170" r="16" fill="#ffffff" stroke="#7c3aed" stroke-width="2.5" />
+        <line x1="90" y1="186" x2="90" y2="225" stroke="#7c3aed" stroke-width="2.5" />
+        <line x1="68" y1="198" x2="112" y2="198" stroke="#7c3aed" stroke-width="2.5" />
+        <line x1="90" y1="225" x2="70" y2="260" stroke="#7c3aed" stroke-width="2.5" />
+        <line x1="90" y1="225" x2="110" y2="260" stroke="#7c3aed" stroke-width="2.5" />
+        <rect x="28" y="272" width="124" height="22" rx="4" fill="#7c3aed" />
+        <text x="90" y="287" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">«Actor» ADMINISTRATOR</text>
+      </g>
+
+      <!-- B. ACTOR GURU -->
+      <g class="actor-card" id="actor-guru">
+        <rect x="20" y="380" width="140" height="175" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2" filter="url(#shadow)" />
+        <circle cx="90" cy="420" r="16" fill="#ffffff" stroke="#059669" stroke-width="2.5" />
+        <line x1="90" y1="436" x2="90" y2="475" stroke="#059669" stroke-width="2.5" />
+        <line x1="68" y1="448" x2="112" y2="448" stroke="#059669" stroke-width="2.5" />
+        <line x1="90" y1="475" x2="70" y2="510" stroke="#059669" stroke-width="2.5" />
+        <line x1="90" y1="475" x2="110" y2="510" stroke="#059669" stroke-width="2.5" />
+        <rect x="28" y="522" width="124" height="22" rx="4" fill="#059669" />
+        <text x="90" y="537" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">«Actor» GURU</text>
+      </g>
+
+      <!-- C. ACTOR SISWA -->
+      <g class="actor-card" id="actor-siswa">
+        <rect x="20" y="630" width="140" height="175" rx="10" fill="#eff6ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)" />
+        <circle cx="90" cy="670" r="16" fill="#ffffff" stroke="#0284c7" stroke-width="2.5" />
+        <line x1="90" y1="686" x2="90" y2="725" stroke="#0284c7" stroke-width="2.5" />
+        <line x1="68" y1="698" x2="112" y2="698" stroke="#0284c7" stroke-width="2.5" />
+        <line x1="90" y1="725" x2="70" y2="760" stroke="#0284c7" stroke-width="2.5" />
+        <line x1="90" y1="725" x2="110" y2="760" stroke="#0284c7" stroke-width="2.5" />
+        <rect x="28" y="772" width="124" height="22" rx="4" fill="#0284c7" />
+        <text x="90" y="787" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">«Actor» SISWA</text>
+      </g>
+
+      <!-- ======================================================== -->
+      <!-- 4. AKTOR SISTEM EKSTERNAL (KANAN - SECONDARY ACTOR)      -->
+      <!-- ======================================================== -->
+      <g class="actor-card" id="actor-external">
+        <rect x="1260" y="270" width="180" height="290" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="2" filter="url(#shadow)" />
+        <text x="1350" y="292" text-anchor="middle" fill="#b45309" font-size="9" font-weight="700">«Secondary Actor / External API»</text>
+        
+        <!-- Stick Figure / System Icon -->
+        <circle cx="1350" cy="340" r="18" fill="#ffffff" stroke="#d97706" stroke-width="2.5" />
+        <line x1="1350" y1="358" x2="1350" y2="405" stroke="#d97706" stroke-width="2.5" />
+        <line x1="1325" y1="372" x2="1375" y2="372" stroke="#d97706" stroke-width="2.5" />
+        <line x1="1350" y1="405" x2="1328" y2="445" stroke="#d97706" stroke-width="2.5" />
+        <line x1="1350" y1="405" x2="1372" y2="445" stroke="#d97706" stroke-width="2.5" />
+        
+        <rect x="1270" y="460" width="160" height="26" rx="4" fill="#d97706" />
+        <text x="1350" y="477" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="800">AI &amp; WHATSAPP GATEWAY</text>
+
+        <rect x="1270" y="495" width="160" height="52" rx="4" fill="#fef3c7" stroke="#fcd34d" />
+        <text x="1350" y="513" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">📲 Fonnte WhatsApp API</text>
+        <text x="1350" y="528" text-anchor="middle" fill="#92400e" font-size="9" font-weight="700">🤖 NVIDIA / Gemini LLM API</text>
+        <text x="1350" y="542" text-anchor="middle" fill="#92400e" font-size="8">Realtime Bot &amp; Webhook</text>
+      </g>
+
+      <!-- ======================================================== -->
+      <!-- 5. USE CASE KOLOM KIRI (ROLE-SPECIFIC)                   -->
+      <!-- ======================================================== -->
+
+      <!-- ADMIN USE CASES (Ungu) -->
+      <g class="uc-node" id="uc-01">
+        <ellipse cx="330" cy="132" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="136" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-01: Kelola Data Siswa &amp; Kontak Ortu</text>
+      </g>
+
+      <g class="uc-node" id="uc-02">
+        <ellipse cx="330" cy="172" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="176" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-02: Kelola Data Guru &amp; No. HP/WA</text>
+      </g>
+
+      <g class="uc-node" id="uc-03">
+        <ellipse cx="330" cy="212" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="216" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-03: Kelola Data Kelas &amp; Wali Kelas</text>
+      </g>
+
+      <g class="uc-node" id="uc-04">
+        <ellipse cx="330" cy="252" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="256" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-04: Kelola Data Jadwal Pelajaran</text>
+      </g>
+
+      <g class="uc-node" id="uc-05">
+        <ellipse cx="330" cy="292" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="296" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-05: Cetak Kartu Barcode/QR Siswa &amp; Guru</text>
+      </g>
+
+      <g class="uc-node" id="uc-06">
+        <ellipse cx="330" cy="332" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="336" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-06: Monitoring &amp; Rekap Absensi Sekolah</text>
+      </g>
+
+      <g class="uc-node" id="uc-07">
+        <ellipse cx="330" cy="372" rx="118" ry="17" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.8" />
+        <text x="330" y="376" text-anchor="middle" fill="#5b21b6" font-size="9.5" font-weight="600">UC-07: Manajemen Akun Pengguna &amp; Admin</text>
+      </g>
+
+      <!-- GURU USE CASES (Hijau) -->
+      <g class="uc-node" id="uc-08">
+        <ellipse cx="330" cy="435" rx="118" ry="17" fill="#ecfdf5" stroke="#059669" stroke-width="1.8" />
+        <text x="330" y="439" text-anchor="middle" fill="#065f46" font-size="9.5" font-weight="700">UC-08: Presensi Mandiri (Masuk / Pulang)</text>
+      </g>
+
+      <g class="uc-node" id="uc-09">
+        <ellipse cx="330" cy="475" rx="118" ry="17" fill="#ecfdf5" stroke="#059669" stroke-width="1.8" />
+        <text x="330" y="479" text-anchor="middle" fill="#065f46" font-size="9.5" font-weight="700">UC-09: Atur / Update No. HP WA Guru</text>
+      </g>
+
+      <g class="uc-node" id="uc-10">
+        <ellipse cx="330" cy="515" rx="118" ry="17" fill="#ecfdf5" stroke="#059669" stroke-width="1.8" />
+        <text x="330" y="519" text-anchor="middle" fill="#065f46" font-size="9.5" font-weight="600">UC-10: Lihat Jadwal Mengajar Guru</text>
+      </g>
+
+      <g class="uc-node" id="uc-11">
+        <ellipse cx="330" cy="555" rx="118" ry="17" fill="#ecfdf5" stroke="#059669" stroke-width="1.8" />
+        <text x="330" y="559" text-anchor="middle" fill="#065f46" font-size="9.5" font-weight="600">UC-11: Lihat Riwayat &amp; Rekap Absensi Pribadi</text>
+      </g>
+
+      <!-- SISWA USE CASES (Biru) -->
+      <g class="uc-node" id="uc-12">
+        <ellipse cx="330" cy="670" rx="118" ry="17" fill="#eff6ff" stroke="#0284c7" stroke-width="1.8" />
+        <text x="330" y="674" text-anchor="middle" fill="#0369a1" font-size="9.5" font-weight="700">UC-12: Lihat &amp; Unduh QR Code Siswa</text>
+      </g>
+
+      <g class="uc-node" id="uc-13">
+        <ellipse cx="330" cy="710" rx="118" ry="17" fill="#eff6ff" stroke="#0284c7" stroke-width="1.8" />
+        <text x="330" y="714" text-anchor="middle" fill="#0369a1" font-size="9.5" font-weight="600">UC-13: Cek Kontak Ortu &amp; No. WA Notifikasi</text>
+      </g>
+
+      <g class="uc-node" id="uc-14">
+        <ellipse cx="330" cy="750" rx="118" ry="17" fill="#eff6ff" stroke="#0284c7" stroke-width="1.8" />
+        <text x="330" y="754" text-anchor="middle" fill="#0369a1" font-size="9.5" font-weight="600">UC-14: Lihat Jadwal Pelajaran Belajar</text>
+      </g>
+
+      <g class="uc-node" id="uc-15">
+        <ellipse cx="330" cy="790" rx="118" ry="17" fill="#eff6ff" stroke="#0284c7" stroke-width="1.8" />
+        <text x="330" y="794" text-anchor="middle" fill="#0369a1" font-size="9.5" font-weight="600">UC-15: Lihat Riwayat Presensi Kehadiran</text>
+      </g>
+
+      <!-- ======================================================== -->
+      <!-- 6. USE CASE KOLOM TENGAH (CORE & SHARED)                 -->
+      <!-- ======================================================== -->
+
+      <!-- LOGIN SISTEM -->
+      <g class="uc-node" id="uc-16">
+        <ellipse cx="650" cy="145" rx="120" ry="20" fill="#f8fafc" stroke="#334155" stroke-width="2.2" />
+        <text x="650" y="145" text-anchor="middle" fill="#0f172a" font-size="10.5" font-weight="800">UC-16: Login Sistem</text>
+        <text x="650" y="157" text-anchor="middle" fill="#64748b" font-size="8.5">(Autentikasi Sesi Multi-Role)</text>
+      </g>
+
+      <!-- SCANNER UNIVERSAL (CENTER HUB) -->
+      <g class="uc-node" id="uc-17">
+        <ellipse cx="650" cy="385" rx="135" ry="24" fill="#eff6ff" stroke="#0284c7" stroke-width="2.5" />
+        <text x="650" y="385" text-anchor="middle" fill="#0369a1" font-size="11" font-weight="800">UC-17: Scan Barcode / QR Presensi</text>
+        <text x="650" y="398" text-anchor="middle" fill="#0284c7" font-size="9">(Scanner Universal Kamera Siswa &amp; Guru)</text>
+      </g>
+
+      <!-- VALIDASI & AUTO ALPHA -->
+      <g class="uc-node" id="uc-18">
+        <ellipse cx="650" cy="495" rx="122" ry="18" fill="#f8fafc" stroke="#475569" stroke-width="1.8" />
+        <text x="650" y="499" text-anchor="middle" fill="#334155" font-size="9" font-weight="700">UC-18: Validasi Kode Barcode &amp; Jam Presensi</text>
+      </g>
+
+      <g class="uc-node" id="uc-19">
+        <ellipse cx="650" cy="270" rx="122" ry="18" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8" />
+        <text x="650" y="274" text-anchor="middle" fill="#991b1b" font-size="9" font-weight="700">UC-19: Sinkronisasi Status Alpha Otomatis</text>
+      </g>
+
+      <!-- WALI KELAS & KEPSEK USE CASES -->
+      <g class="uc-node" id="uc-24">
+        <ellipse cx="650" cy="690" rx="122" ry="18" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.8" />
+        <text x="650" y="694" text-anchor="middle" fill="#0f766e" font-size="9" font-weight="600">UC-24: Monitoring Absensi Kelas Binaan (Wali)</text>
+      </g>
+
+      <g class="uc-node" id="uc-25">
+        <ellipse cx="650" cy="745" rx="122" ry="18" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.8" />
+        <text x="650" y="749" text-anchor="middle" fill="#3730a3" font-size="9" font-weight="600">UC-25: Laporan Eksekutif Kehadiran (Kepsek)</text>
+      </g>
+
+      <!-- ======================================================== -->
+      <!-- 7. USE CASE KOLOM KANAN (AI & WHATSAPP)                  -->
+      <!-- ======================================================== -->
+
+      <!-- AI CHATBOT INTERAKTIF -->
+      <g class="uc-node" id="uc-20">
+        <ellipse cx="1025" cy="235" rx="138" ry="24" fill="#fffbeb" stroke="#d97706" stroke-width="2.2" />
+        <text x="1025" y="234" text-anchor="middle" fill="#92400e" font-size="10.5" font-weight="800">UC-20: Interaksi AI Chatbot Asisten</text>
+        <text x="1025" y="247" text-anchor="middle" fill="#b45309" font-size="8.5">(Tanya Jadwal, Absensi &amp; Info Sekolah Live DB)</text>
+      </g>
+
+      <!-- KONFIGURASI AI API -->
+      <g class="uc-node" id="uc-21">
+        <ellipse cx="1025" cy="335" rx="138" ry="22" fill="#fffbeb" stroke="#d97706" stroke-width="2" />
+        <text x="1025" y="334" text-anchor="middle" fill="#92400e" font-size="10" font-weight="700">UC-21: Konfigurasi AI Multi-Provider API</text>
+        <text x="1025" y="347" text-anchor="middle" fill="#b45309" font-size="8.5">(NVIDIA / Gemini / OpenAI / DeepSeek Key)</text>
+      </g>
+
+      <!-- NOTIFIKASI WA SISWA KE ORTU -->
+      <g class="uc-node" id="uc-22">
+        <ellipse cx="1025" cy="450" rx="138" ry="24" fill="#ecfdf5" stroke="#059669" stroke-width="2.2" />
+        <text x="1025" y="448" text-anchor="middle" fill="#065f46" font-size="10.5" font-weight="800">UC-22: Notifikasi WA Presensi ke Ortu Siswa</text>
+        <text x="1025" y="461" text-anchor="middle" fill="#047857" font-size="8.5">📲 Kirim Pesan Realtime via Fonnte Gateway</text>
+      </g>
+
+      <!-- NOTIFIKASI WA GURU -->
+      <g class="uc-node" id="uc-23">
+        <ellipse cx="1025" cy="555" rx="138" ry="24" fill="#ecfdf5" stroke="#059669" stroke-width="2.2" />
+        <text x="1025" y="553" text-anchor="middle" fill="#065f46" font-size="10.5" font-weight="800">UC-23: Notifikasi WA Presensi ke Guru</text>
+        <text x="1025" y="566" text-anchor="middle" fill="#047857" font-size="8.5">📲 Konfirmasi Jam Masuk &amp; Pulang ke No. HP Guru</text>
+      </g>
+
+      <!-- ======================================================== -->
+      <!-- 8. GARIS ASOSIASI (AKTOR -> USE CASE)                    -->
+      <!-- ======================================================== -->
+
+      <!-- Relasi Admin (Ungu) -->
+      <path d="M 160 160 L 212 132" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 170 L 212 172" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 180 L 212 212" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 190 L 212 252" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 200 L 212 292" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 210 L 212 332" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 220 L 212 372" stroke="#7c3aed" stroke-width="1.2" opacity="0.8" />
+      <path d="M 160 150 C 350 70, 480 130, 530 145" stroke="#7c3aed" stroke-width="1.4" opacity="0.8" fill="none" />
+      <path d="M 160 240 C 450 320, 750 320, 887 335" stroke="#7c3aed" stroke-width="1.4" stroke-dasharray="3,3" fill="none" />
+
+      <!-- Relasi Guru (Hijau) -->
+      <path d="M 160 420 L 212 435" stroke="#059669" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 435 L 212 475" stroke="#059669" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 450 L 212 515" stroke="#059669" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 465 L 212 555" stroke="#059669" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 410 C 280 340, 480 380, 515 385" stroke="#059669" stroke-width="1.5" fill="none" />
+      <path d="M 160 395 C 320 200, 480 150, 530 145" stroke="#059669" stroke-width="1.2" fill="none" />
+
+      <!-- Relasi Siswa (Biru) -->
+      <path d="M 160 670 L 212 670" stroke="#0284c7" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 685 L 212 710" stroke="#0284c7" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 700 L 212 750" stroke="#0284c7" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 715 L 212 790" stroke="#0284c7" stroke-width="1.3" opacity="0.85" />
+      <path d="M 160 655 C 320 540, 480 400, 515 385" stroke="#0284c7" stroke-width="1.5" fill="none" />
+      <path d="M 160 640 C 350 300, 480 160, 530 145" stroke="#0284c7" stroke-width="1.2" fill="none" />
+
+      <!-- Relasi Semua Aktor ke AI Chatbot (Orange) -->
+      <path d="M 160 140 C 450 60, 850 120, 940 215" stroke="#d97706" stroke-width="1.3" stroke-dasharray="4,4" fill="none" />
+      <path d="M 160 440 C 500 240, 820 230, 887 235" stroke="#d97706" stroke-width="1.3" stroke-dasharray="4,4" fill="none" />
+      <path d="M 160 730 C 550 820, 850 400, 930 255" stroke="#d97706" stroke-width="1.3" stroke-dasharray="4,4" fill="none" />
+
+      <!-- ======================================================== -->
+      <!-- 9. RELASI INCLUDE / EXTEND (GARIS PUTUS-PUTUS & PANAH)   -->
+      <!-- ======================================================== -->
+
+      <!-- Scan Presensi -> Validasi Barcode (<<include>>) -->
+      <path d="M 650 409 L 650 477" stroke="#3b82f6" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow-include)" />
+      <rect x="618" y="435" width="64" height="16" rx="3" fill="#eff6ff" stroke="#bfdbfe" />
+      <text x="650" y="446" text-anchor="middle" fill="#1d4ed8" font-size="8" font-weight="700">«include»</text>
+
+      <!-- Auto Alpha -> Scan Presensi (<<extend>>) -->
+      <path d="M 650 288 L 650 361" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow-extend)" />
+      <rect x="620" y="318" width="60" height="16" rx="3" fill="#fffbeb" stroke="#fde68a" />
+      <text x="650" y="329" text-anchor="middle" fill="#b45309" font-size="8" font-weight="700">«extend»</text>
+
+      <!-- Scan Presensi (Siswa) -> Notifikasi WA Ortu (<<include>>) -->
+      <path d="M 780 395 C 840 405, 870 435, 887 450" stroke="#059669" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow-wa)" fill="none" />
+      <rect x="795" y="420" width="85" height="16" rx="3" fill="#ecfdf5" stroke="#a7f3d0" />
+      <text x="837" y="431" text-anchor="middle" fill="#047857" font-size="8" font-weight="700">«include (Siswa)»</text>
+
+      <!-- Scan Presensi (Guru) -> Notifikasi WA Guru (<<include>>) -->
+      <path d="M 770 405 C 830 450, 860 520, 892 548" stroke="#059669" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow-wa)" fill="none" />
+      <rect x="795" y="485" width="85" height="16" rx="3" fill="#ecfdf5" stroke="#a7f3d0" />
+      <text x="837" y="496" text-anchor="middle" fill="#047857" font-size="8" font-weight="700">«include (Guru)»</text>
+
+      <!-- Presensi Mandiri Guru -> Notifikasi WA Guru (<<include>>) -->
+      <path d="M 448 440 C 650 470, 780 535, 887 555" stroke="#059669" stroke-width="1.4" stroke-dasharray="4,4" marker-end="url(#arrow-wa)" fill="none" />
+      <rect x="580" y="520" width="60" height="16" rx="3" fill="#ecfdf5" stroke="#a7f3d0" />
+      <text x="610" y="531" text-anchor="middle" fill="#047857" font-size="8" font-weight="700">«include»</text>
+
+      <!-- ======================================================== -->
+      <!-- 10. RELASI USE CASE -> AKTOR EKSTERNAL (KANAN)           -->
+      <!-- ======================================================== -->
+
+      <!-- AI Chatbot -> External API -->
+      <path d="M 1163 235 C 1205 245, 1225 285, 1260 310" stroke="#d97706" stroke-width="1.8" marker-end="url(#arrow-ai)" fill="none" />
+      
+      <!-- AI Config -> External API -->
+      <path d="M 1163 335 L 1260 350" stroke="#d97706" stroke-width="1.8" marker-end="url(#arrow-ai)" />
+
+      <!-- Notifikasi WA Ortu -> Fonnte Gateway -->
+      <path d="M 1163 450 L 1260 440" stroke="#059669" stroke-width="1.8" marker-end="url(#arrow-wa)" />
+
+      <!-- Notifikasi WA Guru -> Fonnte Gateway -->
+      <path d="M 1163 555 C 1205 540, 1230 500, 1260 480" stroke="#059669" stroke-width="1.8" marker-end="url(#arrow-wa)" fill="none" />
+
+      <!-- ======================================================== -->
+      <!-- 11. LEGENDA & SIMBOL LENGKAP (FOOTER)                    -->
+      <!-- ======================================================== -->
+      <rect x="20" y="865" width="1420" height="90" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" />
+      
+      <rect x="35" y="873" width="310" height="18" rx="4" fill="#0f172a" />
+      <text x="190" y="886" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="800">
+        📌 KETERANGAN &amp; LEGENDA SIMBOL USE CASE DIAGRAM LENGKAP
+      </text>
+
+      <!-- Item 1: Aktor Manusia -->
+      <circle cx="60" cy="915" r="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.8" />
+      <line x1="60" y1="924" x2="60" y2="940" stroke="#7c3aed" stroke-width="1.8" />
+      <line x1="48" y1="930" x2="72" y2="930" stroke="#7c3aed" stroke-width="1.8" />
+      <line x1="60" y1="940" x2="50" y2="952" stroke="#7c3aed" stroke-width="1.8" />
+      <line x1="60" y1="940" x2="70" y2="952" stroke="#7c3aed" stroke-width="1.8" />
+      <text x="85" y="924" fill="#1e293b" font-size="9.5" font-weight="700">Aktor Manusia (Primary Actor)</text>
+      <text x="85" y="938" fill="#64748b" font-size="8">Admin, Guru, Siswa yang mengoperasikan sistem</text>
+
+      <!-- Item 2: Aktor Eksternal -->
+      <rect x="310" y="907" width="28" height="38" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1.5" />
+      <circle cx="324" cy="917" r="5" fill="#d97706" />
+      <line x1="316" y1="929" x2="332" y2="929" stroke="#d97706" stroke-width="1.5" />
+      <text x="350" y="924" fill="#1e293b" font-size="9.5" font-weight="700">Aktor Sistem Eksternal (API Service)</text>
+      <text x="350" y="938" fill="#64748b" font-size="8">Fonnte WhatsApp Gateway &amp; LLM AI Engine</text>
+
+      <!-- Item 3: Use Case Oval -->
+      <ellipse cx="615" cy="927" rx="35" ry="14" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5" />
+      <text x="615" y="930" text-anchor="middle" fill="#5b21b6" font-size="8" font-weight="700">Use Case</text>
+      <text x="665" y="924" fill="#1e293b" font-size="9.5" font-weight="700">Use Case (Fungsionalitas)</text>
+      <text x="665" y="938" fill="#64748b" font-size="8">Unit proses kerja / fitur fungsional sistem</text>
+
+      <!-- Item 4: Asosiasi -->
+      <line x1="880" y1="927" x2="940" y2="927" stroke="#334155" stroke-width="2" />
+      <text x="955" y="924" fill="#1e293b" font-size="9.5" font-weight="700">Garis Asosiasi (Association)</text>
+      <text x="955" y="938" fill="#64748b" font-size="8">Interaksi langsung antara aktor dan use case</text>
+
+      <!-- Item 5: Include / Extend -->
+      <line x1="1160" y1="918" x2="1225" y2="918" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#arrow-include)" />
+      <text x="1235" y="919" fill="#1e293b" font-size="8.5" font-weight="700">«include» (Wajib Dijalankan)</text>
+      
+      <line x1="1160" y1="938" x2="1225" y2="938" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#arrow-extend)" />
+      <text x="1235" y="940" fill="#1e293b" font-size="8.5" font-weight="700">«extend» (Perluasan Kondisional)</text>
+
+    </svg>
+  </div>
+
+</body>
+</html>

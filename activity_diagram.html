@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UML Activity Diagram — Sistem Absensi SMK NU WARGABINANGUN</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      margin: 0;
+      padding: 16px;
+    }
+    .flow-card {
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background-color: #0284c7;
+      color: #ffffff;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+
+  <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+    <!-- Header -->
+    <div class="bg-slate-900 text-white p-5 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-sky-500 text-white uppercase tracking-wider">UML Diagram</span>
+          <h1 class="text-lg font-bold tracking-tight">Activity Diagrams — Sistem Absensi SMK NU WARGABINANGUN</h1>
+        </div>
+        <p class="text-xs text-slate-400 mt-1">Pemodelan Alur Kerja Fungsional, Kamera Barcode Scanner, Notifikasi WhatsApp (Fonnte API), dan AI Chatbot</p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        6 Alur Proses Terpetakan
+      </div>
+    </div>
+
+    <!-- Tab Selector -->
+    <div class="bg-slate-100 p-2 border-b border-slate-200 flex flex-wrap gap-1.5 text-xs">
+      <button onclick="switchTab('tab-core')" id="btn-tab-core" class="tab-btn active px-3.5 py-2 rounded-lg font-semibold transition border border-transparent">
+        📷 1. Scan QR &amp; Notif WA (Core)
+      </button>
+      <button onclick="switchTab('tab-auth')" id="btn-tab-auth" class="tab-btn px-3.5 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition border border-transparent">
+        🔐 2. Login &amp; Multi-Role Auth
+      </button>
+      <button onclick="switchTab('tab-guru')" id="btn-tab-guru" class="tab-btn px-3.5 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition border border-transparent">
+        👨‍🏫 3. Presensi Mandiri &amp; WA Guru
+      </button>
+      <button onclick="switchTab('tab-ai')" id="btn-tab-ai" class="tab-btn px-3.5 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition border border-transparent">
+        🤖 4. Konsultasi AI Chatbot
+      </button>
+      <button onclick="switchTab('tab-alpha')" id="btn-tab-alpha" class="tab-btn px-3.5 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition border border-transparent">
+        ⏰ 5. Auto-Data Alpha
+      </button>
+      <button onclick="switchTab('tab-admin')" id="btn-tab-admin" class="tab-btn px-3.5 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition border border-transparent">
+        👥 6. Master Siswa &amp; Kontak Ortu
+      </button>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="p-6">
+
+      <!-- TAB 1: CORE SCAN & WHATSAPP -->
+      <div id="tab-core" class="tab-content block space-y-4">
+        <div class="bg-sky-50 border border-sky-200 rounded-lg p-3 text-xs text-sky-900 flex items-start gap-2">
+          <span class="text-base">📌</span>
+          <div>
+            <strong>Alur Inti Presensi Universal</strong>: Pemindaian kamera mendeteksi QR Siswa / Guru, validasi data di database, mencatat jam kehadiran, dan secara otomatis mengeksekusi pengiriman notifikasi WhatsApp ke Orang Tua (jika siswa) atau ke nomor Guru (jika guru) melalui Fonnte API Gateway.
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+          <!-- Swimlane 1: User -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div class="font-bold text-slate-800 pb-2 border-b border-slate-200 mb-2 flex items-center gap-1.5">
+              <span>👨‍🎓/👨‍🏫</span> Pengguna
+            </div>
+            <div class="space-y-2">
+              <div class="p-2 bg-emerald-100 border border-emerald-300 rounded font-bold text-emerald-800 text-center">● Mulai</div>
+              <div class="p-2 bg-white border border-slate-200 rounded shadow-sm">Arahkan kartu QR / Barcode ke arah kamera scanner</div>
+              <div class="text-center text-slate-400 font-bold">↓</div>
+              <div class="p-2 bg-blue-50 border border-blue-200 rounded text-blue-800">Melihat status 'Sudah Absen' dan mendengar nada beep</div>
+            </div>
+          </div>
+
+          <!-- Swimlane 2: Scanner -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div class="font-bold text-slate-800 pb-2 border-b border-slate-200 mb-2 flex items-center gap-1.5">
+              <span>📷</span> Kamera Scanner
+            </div>
+            <div class="space-y-2">
+              <div class="p-2 bg-white border border-slate-200 rounded shadow-sm">Mendeteksi pola QR / Barcode via Html5-Qrcode</div>
+              <div class="text-center text-slate-400 font-bold">↓</div>
+              <div class="p-2 bg-white border border-slate-200 rounded shadow-sm">Ekstrak string kode NIS / NIP / Barcode ID</div>
+              <div class="text-center text-slate-400 font-bold">↓</div>
+              <div class="p-2 bg-sky-100 border border-sky-300 rounded text-sky-800 font-semibold">Kirim AJAX POST ke /proses_absen.php</div>
+            </div>
+          </div>
+
+          <!-- Swimlane 3: Backend -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 md:col-span-2">
+            <div class="font-bold text-slate-800 pb-2 border-b border-slate-200 mb-2 flex items-center gap-1.5">
+              <span>⚙️</span> Backend (proses_absen.php) &amp; Database
+            </div>
+            <div class="space-y-2">
+              <div class="p-2 bg-white border border-slate-200 rounded shadow-sm">Cari data di tabel <code>siswa</code></div>
+              <div class="p-2 bg-amber-50 border border-amber-300 rounded text-amber-900 font-medium">
+                ◆ Siswa terdaftar?
+                <div class="mt-1 pl-2 border-l-2 border-amber-400 space-y-1">
+                  <div>• Ya: Cek kehadiran hari ini. Jika pernah Alpha otomatis, update status ke Hadir/Terlambat.</div>
+                  <div>• Tentukan status (Hadir &le; 07:00, Terlambat &gt; 07:00).</div>
+                  <div>• Ambil <code>no_hp_ortu</code> &amp; nama ortu.</div>
+                </div>
+              </div>
+              <div class="p-2 bg-purple-50 border border-purple-300 rounded text-purple-900 font-medium">
+                ◆ Bukan siswa? Cari di tabel <code>guru</code>
+                <div class="mt-1 pl-2 border-l-2 border-purple-400 space-y-1">
+                  <div>• Belum absen: Catat Jam Masuk.</div>
+                  <div>• Sudah ada jam masuk: Cek jeda &ge; 10 menit &rarr; Catat Jam Pulang.</div>
+                </div>
+              </div>
+              <div class="p-2 bg-emerald-100 border border-emerald-300 rounded text-emerald-900 font-bold text-center">
+                Eksekusi cURL POST ke Fonnte WhatsApp API
+              </div>
+            </div>
+          </div>
+
+          <!-- Swimlane 4: WhatsApp Gateway -->
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div class="font-bold text-slate-800 pb-2 border-b border-slate-200 mb-2 flex items-center gap-1.5">
+              <span>📲</span> WhatsApp Gateway
+            </div>
+            <div class="space-y-2">
+              <div class="p-2 bg-white border border-slate-200 rounded shadow-sm">Menerima payload nomor tujuan &amp; pesan resmi</div>
+              <div class="text-center text-slate-400 font-bold">↓</div>
+              <div class="p-2 bg-emerald-50 border border-emerald-200 rounded text-emerald-800">
+                Kirim pesan WhatsApp real-time:
+                <div class="mt-1 font-mono text-[10px] text-emerald-700 bg-white p-1 rounded border">
+                  "Putra/putri Anda telah absen..."
+                </div>
+              </div>
+              <div class="text-center text-slate-400 font-bold">↓</div>
+              <div class="p-2 bg-emerald-200 border border-emerald-400 rounded text-emerald-900 font-bold text-center">
+                Pesan Diterima di HP Ortu / Guru
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: AUTH -->
+      <div id="tab-auth" class="tab-content hidden space-y-4">
+        <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 text-xs text-purple-900">
+          <strong>Alur Autentikasi Pengguna &amp; Keamanan Sesi</strong>: Validasi token CSRF form, pengecekan akun di tabel <code>users</code>, verifikasi password bcrypt, regenerasi ID sesi untuk mencegah Session Fixation, dan pengalihan ke dashboard sesuai role (Admin, Guru, Siswa, Wali Kelas, Kepala Sekolah).
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border rounded-lg">
+            <h4 class="font-bold mb-2">1. Input Kredensial</h4>
+            <p>Pengguna menginput Username / NIS / NIP dan Password pada halaman <code>/auth</code>, lalu submit form dengan token CSRF.</p>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-lg">
+            <h4 class="font-bold mb-2">2. Verifikasi Backend</h4>
+            <p>Sistem memverifikasi status akun aktif dan kecocokan password dengan <code>password_verify()</code>. Jika gagal, redirect kembali dengan pesan flash.</p>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-lg">
+            <h4 class="font-bold mb-2">3. Resolusi Sesi &amp; Role</h4>
+            <p>Sistem meregenerasi sesi, menyimpan identitas pengguna, dan mengarahkan ke URL role spesifik (<code>/admin/dashboard</code>, <code>/guru/dashboard</code>, <code>/siswa/dashboard</code>).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: GURU -->
+      <div id="tab-guru" class="tab-content hidden space-y-4">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-xs text-emerald-900">
+          <strong>Alur Guru: Presensi Mandiri &amp; Kelola Nomor WhatsApp</strong>: Guru dapat mengatur nomor WhatsApp aktif sendiri melalui modal popup, serta melakukan presensi jam masuk dan jam pulang mandiri dari dashboard dengan konfirmasi notifikasi WhatsApp otomatis.
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border rounded-lg space-y-1.5">
+            <h4 class="font-bold text-emerald-800">A. Pengaturan Mandiri Nomor WhatsApp</h4>
+            <p>1. Guru klik tombol 'Ubah / Tambah Nomor WhatsApp' di kartu profil.</p>
+            <p>2. Modal <code>#modalNoHpGuru</code> muncul.</p>
+            <p>3. Guru memasukkan nomor HP (misal: <code>081234567890</code>).</p>
+            <p>4. Controller membersihkan karakter non-digit dan menyimpan ke kolom <code>no_wa</code> &amp; <code>no_hp</code>.</p>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-lg space-y-1.5">
+            <h4 class="font-bold text-emerald-800">B. Presensi Mandiri (Masuk / Pulang)</h4>
+            <p>1. Guru klik tombol 'Presensi Masuk' &rarr; sistem catat jam masuk dan kirim WA konfirmasi.</p>
+            <p>2. Saat jam pulang, tombol berubah jadi 'Presensi Pulang'.</p>
+            <p>3. Sistem memeriksa batas jeda minimal 10 menit, mencatat jam kepulangan, dan mengirim WA kepulangan.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: AI CHATBOT -->
+      <div id="tab-ai" class="tab-content hidden space-y-4">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-900">
+          <strong>Alur Asisten Pintar AI Chatbot (Live DB RAG)</strong>: Menggabungkan kecerdasan buatan LLM (NVIDIA, Gemini, OpenAI, DeepSeek) dengan pembacaan database faktual sekolah (rekap absensi, jadwal mengajar/belajar, dan data profil) secara otomatis sebelum menghasilkan balasan.
+        </div>
+        <div class="p-4 bg-slate-50 border rounded-lg text-xs space-y-2">
+          <div class="flex items-center gap-2 font-mono font-bold text-slate-700">
+            <span>User Prompt</span> &rarr; <span>Context Extractor (DB Siswa/Guru/Jadwal)</span> &rarr; <span>System Prompt Builder</span> &rarr; <span>Cloud LLM API</span> &rarr; <span>Chat Response</span>
+          </div>
+          <p class="text-slate-600">Sistem menjamin AI memberikan jawaban akurat tanpa halusinasi karena data kehadiran siswa, rekapitulasi guru, dan jadwal pelajaran hari ini disuntikkan langsung dari basis data sebelum API LLM dipanggil.</p>
+        </div>
+      </div>
+
+      <!-- TAB 5: AUTO ALPHA -->
+      <div id="tab-alpha" class="tab-content hidden space-y-4">
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-3 text-xs text-rose-900">
+          <strong>Alur Sinkronisasi Alpha Otomatis</strong>: Saat waktu sistem melewati batas toleransi kehadiran jam 07:00:00 WIB, sistem otomatis menandai siswa dan guru yang belum hadir dengan status Alpha (3). Jika mereka datang kemudian dan scan QR, sistem cerdas meng-update record Alpha menjadi Hadir / Terlambat.
+        </div>
+      </div>
+
+      <!-- TAB 6: ADMIN DATA MASTER -->
+      <div id="tab-admin" class="tab-content hidden space-y-4">
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-blue-900">
+          <strong>Alur Kelola Master Siswa &amp; Kontak Orang Tua</strong>: Admin mengelola identitas siswa, kelas, barcode ID, serta nama orang tua dan nomor WhatsApp orang tua. Tabel data dilengkapi tombol WhatsApp <code>wa.me/62...</code> untuk obrolan langsung.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
+      <div>Dokumentasi Resmi Proyek Sistem Absensi • SMK NU WARGABINANGUN</div>
+      <div class="font-mono text-slate-400">File: ACTIVITY_DIAGRAM.md</div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active', 'bg-sky-600', 'text-white', 'font-bold');
+        el.classList.add('text-slate-600');
+      });
+      
+      const activeContent = document.getElementById(tabId);
+      if (activeContent) activeContent.classList.remove('hidden');
+      
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-sky-600', 'text-white', 'font-bold');
+        activeBtn.classList.remove('text-slate-600');
+      }
+    }
+  </script>
+</body>
+</html>

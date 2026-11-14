@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Scanner Presensi QR / Barcode</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- html5-qrcode Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            min-height: 100vh;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Viewport Container */
+        .scanner-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: none;
+        }
+        .viewport-wrapper {
+            position: relative;
+            max-width: 440px;
+            width: 100%;
+            min-height: 320px;
+            background: #0f172a;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+        }
+        #reader {
+            width: 100%;
+            min-height: 320px;
+        }
+        #reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 1rem;
+        }
+        /* Laser & Viewfinder */
+        .scanner-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .viewfinder-box {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+        }
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: #06b6d4;
+            border-style: solid;
+        }
+        .corner.top-left { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 10px; }
+        .corner.top-right { top: -2px; right: -2px; border-width: 4px 4px 0 0; border-top-right-radius: 10px; }
+        .corner.bottom-left { bottom: -2px; left: -2px; border-width: 0 0 4px 4px; border-bottom-left-radius: 10px; }
+        .corner.bottom-right { bottom: -2px; right: -2px; border-width: 0 4px 4px 0; border-bottom-right-radius: 10px; }
+
+        .laser {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ef4444, #f43f5e, #ef4444, transparent);
+            box-shadow: 0 0 10px 2px rgba(239, 68, 68, 0.8);
+            animation: laserMove 2s ease-in-out infinite alternate;
+        }
+        @keyframes laserMove {
+            0% { top: 5%; }
+            100% { top: 92%; }
+        }
+
+        /* Processing Overlay */
+        .processing-cover {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(3px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .empty-placeholder {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body class="py-4">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <!-- Title Header -->
+            <div class="text-center mb-4">
+                <div class="d-inline-flex p-3 bg-primary-subtle text-primary rounded-circle mb-2">
+                    <i class="bi bi-qr-code-scan fs-3"></i>
+                </div>
+                <h4 class="fw-bold mb-1">Presensi Siswa — Live Scanner</h4>
+                <p class="text-muted small">Pindai QR Code atau Barcode Kartu Pelajar melalui kamera perangkat</p>
+            </div>
+
+            <!-- Status Kehadiran Selector Card -->
+            <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden bg-white">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <small class="fw-bold text-dark"><i class="bi bi-person-check-fill text-primary me-1"></i> Status Kehadiran:</small>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" id="demoStatusBadge">HADIR</span>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="status_pilihan" id="demoHadir" value="0" checked autocomplete="off">
+                            <label class="btn btn-outline-success btn-sm w-100 py-2 rounded-3 fw-semibold" for="demoHadir">
+                                <i class="bi bi-check-circle-fill me-1"></i> Hadir
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="status_pilihan" id="demoSakit" value="1" autocomplete="off">
+                            <label class="btn btn-outline-warning btn-sm w-100 py-2 rounded-3 fw-semibold" for="demoSakit">
+                                <i class="bi bi-heart-pulse-fill me-1"></i> Sakit
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="status_pilihan" id="demoIzin" value="2" autocomplete="off">
+                            <label class="btn btn-outline-info btn-sm w-100 py-2 rounded-3 fw-semibold" for="demoIzin">
+                                <i class="bi bi-envelope-paper-fill me-1"></i> Izin
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Result Alert -->
+            <div id="alertBox" class="alert d-none shadow-sm rounded-4 mb-3" role="alert">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div id="alertIconBox" class="rounded-circle d-flex align-items-center justify-content-center p-2 text-white" style="width: 44px; height: 44px;">
+                        <i id="alertIcon" class="bi fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 id="alertTitle" class="fw-bold mb-0"></h6>
+                        <small id="alertMessage" class="d-block text-muted"></small>
+                    </div>
+                </div>
+
+                <!-- Detail Pengguna (Siswa / Guru) -->
+                <div id="studentDetails" class="bg-white rounded-3 p-3 mt-2 border d-none small">
+                    <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                        <span class="badge bg-primary-subtle text-primary fw-bold" id="detRoleBadge">SISWA</span>
+                        <span id="detStatusBadge" class="badge rounded-pill bg-success text-white px-3 py-1">SUDAH ABSEN</span>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <span class="text-muted d-block" id="labelDetNis">NIS:</span>
+                            <strong id="detNis" class="font-mono text-dark">-</strong>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-muted d-block" id="labelDetKelas">Kelas:</span>
+                            <strong id="detKelas" class="text-dark">-</strong>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-muted d-block">Nama Lengkap:</span>
+                            <strong id="detNama" class="text-dark">-</strong>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-muted d-block">Waktu Presensi:</span>
+                            <strong id="detWaktu" class="text-dark">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cooldown Indicator -->
+                <div class="mt-2 pt-2 border-top d-flex align-items-center justify-content-between small text-muted">
+                    <span><i class="bi bi-clock-history me-1"></i> Scan siswa berikutnya dalam: <strong id="cdSeconds">3s</strong></span>
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none p-0" id="btnQuickResume">Scan Sekarang</button>
+                </div>
+            </div>
+
+            <!-- Scanner Card -->
+            <div class="scanner-card p-4">
+                
+                <!-- Camera Select & Action Buttons -->
+                <div class="row g-2 mb-3">
+                    <div class="col-8">
+                        <select id="cameraList" class="form-select form-select-sm">
+                            <option value="">Mencari kamera...</option>
+                        </select>
+                    </div>
+                    <div class="col-4 d-flex gap-1">
+                        <button id="btnToggleCam" class="btn btn-sm btn-primary w-100">
+                            <i class="bi bi-play-fill me-1"></i> Mulai
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Camera Viewport -->
+                <div class="viewport-wrapper">
+                    <div id="reader"></div>
+
+                    <!-- Overlay Viewfinder & Laser -->
+                    <div id="laserOverlay" class="scanner-overlay d-none">
+                        <div class="viewfinder-box">
+                            <div class="corner top-left"></div>
+                            <div class="corner top-right"></div>
+                            <div class="corner bottom-left"></div>
+                            <div class="corner bottom-right"></div>
+                            <div class="laser"></div>
+                        </div>
+                    </div>
+
+                    <!-- Processing Overlay -->
+                    <div id="processingCover" class="processing-cover d-none">
+                        <div class="spinner-border text-light spinner-border-sm mb-2" role="status"></div>
+                        <span class="text-white small fw-bold">Memverifikasi ke Database...</span>
+                        <small id="codePreview" class="text-white-50 font-mono mt-1"></small>
+                    </div>
+
+                    <!-- Camera Placeholder -->
+                    <div id="placeholderCover" class="empty-placeholder text-center p-4">
+                        <i class="bi bi-camera-video-off fs-1 text-secondary mb-2"></i>
+                        <h6 class="text-secondary fw-semibold mb-1">Kamera Belum Aktif</h6>
+                        <small class="text-muted">Pilih kamera dan klik tombol <strong>Mulai</strong> di atas</small>
+                    </div>
+                </div>
+
+                <!-- Status Footer -->
+                <div class="text-center mt-3">
+                    <span id="badgeStatus" class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill small">
+                        <i class="bi bi-circle-fill me-1 small"></i> Kamera Nonaktif
+                    </span>
+                </div>
+
+                <!-- Manual Test Input -->
+                <div class="mt-4 pt-3 border-top">
+                    <label class="form-label small text-muted">Test Manual / Scanner USB:</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="manualInput" class="form-control font-mono" placeholder="Ketik NIS / Barcode..." autocomplete="off">
+                        <button class="btn btn-outline-primary" type="button" id="btnManualSubmit">Kirim</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cameraList       = document.getElementById('cameraList');
+    const btnToggleCam     = document.getElementById('btnToggleCam');
+    const readerDiv        = document.getElementById('reader');
+    const laserOverlay     = document.getElementById('laserOverlay');
+    const processingCover  = document.getElementById('processingCover');
+    const placeholderCover = document.getElementById('placeholderCover');
+    const codePreview      = document.getElementById('codePreview');
+    const badgeStatus      = document.getElementById('badgeStatus');
+
+    // Alert elements
+    const alertBox        = document.getElementById('alertBox');
+    const alertIconBox    = document.getElementById('alertIconBox');
+    const alertIcon       = document.getElementById('alertIcon');
+    const alertTitle      = document.getElementById('alertTitle');
+    const alertMessage    = document.getElementById('alertMessage');
+    const studentDetails  = document.getElementById('studentDetails');
+    const detNis          = document.getElementById('detNis');
+    const detKelas        = document.getElementById('detKelas');
+    const detNama         = document.getElementById('detNama');
+    const detWaktu        = document.getElementById('detWaktu');
+    const detStatusBadge  = document.getElementById('detStatusBadge');
+    const cdSeconds       = document.getElementById('cdSeconds');
+    const btnQuickResume  = document.getElementById('btnQuickResume');
+
+    // Manual test
+    const manualInput     = document.getElementById('manualInput');
+    const btnManualSubmit = document.getElementById('btnManualSubmit');
+
+    let html5QrCode      = null;
+    let isRunning        = false;
+    let isProcessing     = false;
+    let cooldownInterval = null;
+
+    // Web Audio Beep
+    function playAudio(type = 'success') {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            if (type === 'success') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.15);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(260, ctx.currentTime);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.25);
+            }
+        } catch (e) {
+            console.log('Audio disabled or not supported');
+        }
+    }
+
+    // 1. Dapatkan daftar kamera
+    function initCameras() {
+        if (typeof Html5Qrcode === 'undefined') {
+            console.error('Library Html5Qrcode tidak dapat dimuat.');
+            return;
+        }
+
+        Html5Qrcode.getCameras().then(devices => {
+            cameraList.innerHTML = '';
+            if (devices && devices.length > 0) {
+                devices.forEach((dev, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = dev.id;
+                    opt.textContent = dev.label || `Kamera ${idx + 1}`;
+                    cameraList.appendChild(opt);
+                });
+
+                // Pilih kamera belakang jika ada
+                let backCam = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('environment'));
+                if (backCam) {
+                    cameraList.value = backCam.id;
+                }
+
+                // Otomatis nyalakan kamera
+                startScanner(cameraList.value);
+            } else {
+                cameraList.innerHTML = '<option value="">Tidak ada kamera terdeteksi</option>';
+            }
+        }).catch(err => {
+            console.warn('Gagal membaca kamera:', err);
+            cameraList.innerHTML = '<option value="">Izinkan akses kamera di browser</option>';
+        });
+    }
+
+    // 2. Start Scanner
+    function startScanner(cameraId) {
+        if (isRunning) {
+            stopScanner().then(() => startScanner(cameraId));
+            return;
+        }
+
+        if (!html5QrCode) {
+            html5QrCode = new Html5Qrcode("reader");
+        }
+
+        const config = {
+            fps: 15,
+            qrbox: { width: 220, height: 220 },
+            aspectRatio: 1.0,
+            formatsToSupport: [
+                Html5QrcodeSupportedFormats.QR_CODE,
+                Html5QrcodeSupportedFormats.CODE_128,
+                Html5QrcodeSupportedFormats.CODE_39,
+                Html5QrcodeSupportedFormats.EAN_13,
+                Html5QrcodeSupportedFormats.UPC_A
+            ]
+        };
+
+        const camSource = cameraId ? { deviceId: { exact: cameraId } } : { facingMode: "environment" };
+
+        html5QrCode.start(
+            camSource,
+            config,
+            onCodeScanned,
+            function onScanError(err) { /* Abaikan kegagalan per-frame */ }
+        ).then(() => {
+            isRunning = true;
+            isProcessing = false;
+            placeholderCover.classList.add('d-none');
+            laserOverlay.classList.remove('d-none');
+            processingCover.classList.add('d-none');
+
+            btnToggleCam.className = "btn btn-sm btn-danger w-100";
+            btnToggleCam.innerHTML = '<i class="bi bi-stop-fill me-1"></i> Berhenti';
+
+            badgeStatus.className = "badge bg-success-subtle text-success px-3 py-2 rounded-pill small";
+            badgeStatus.innerHTML = '<i class="bi bi-broadcast me-1"></i> Kamera Aktif &bull; Arahkan Kode';
+        }).catch(err => {
+            console.error('Kamera gagal dijalankan:', err);
+            isRunning = false;
+            placeholderCover.classList.remove('d-none');
+            laserOverlay.classList.add('d-none');
+
+            badgeStatus.className = "badge bg-danger-subtle text-danger px-3 py-2 rounded-pill small";
+            badgeStatus.textContent = 'Gagal Mengakses Kamera: ' + err.message;
+        });
+    }
+
+    // 3. Stop Scanner
+    function stopScanner() {
+        if (!html5QrCode || !isRunning) return Promise.resolve();
+
+        return html5QrCode.stop().then(() => {
+            isRunning = false;
+            placeholderCover.classList.remove('d-none');
+            laserOverlay.classList.add('d-none');
+            processingCover.classList.add('d-none');
+
+            btnToggleCam.className = "btn btn-sm btn-primary w-100";
+            btnToggleCam.innerHTML = '<i class="bi bi-play-fill me-1"></i> Mulai';
+
+            badgeStatus.className = "badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill small";
+            badgeStatus.innerHTML = '<i class="bi bi-circle-fill me-1 small"></i> Kamera Nonaktif';
+        });
+    }
+
+    btnToggleCam.addEventListener('click', function () {
+        if (isRunning) {
+            stopScanner();
+        } else {
+            startScanner(cameraList.value);
+        }
+    });
+
+    cameraList.addEventListener('change', function () {
+        if (isRunning) {
+            startScanner(this.value);
+        }
+    });
+
+    // 4. Callback Saat Kode Terbaca
+    function onCodeScanned(decodedText) {
+        if (isProcessing) return;
+        isProcessing = true;
+
+        // Jeda kamera agar tidak scan berulang kali
+        if (html5QrCode && isRunning) {
+            try {
+                html5QrCode.pause(true);
+            } catch (e) {}
+        }
+
+        // Tampilkan overlay loading
+        codePreview.textContent = decodedText;
+        processingCover.classList.remove('d-none');
+
+        // Kirim request ke Backend proses_absen.php
+        sendToBackend(decodedText);
+    }
+
+    // 5. Kirim ke Backend via Fetch (AJAX)
+    function sendToBackend(code) {
+        const selectedRadio = document.querySelector('input[name="status_pilihan"]:checked');
+        const selectedStatus = selectedRadio ? selectedRadio.value : '0';
+
+        const formData = new FormData();
+        formData.append('barcode_id', code);
+        formData.append('status', selectedStatus);
+
+        // Kirim ke proses_absen.php
+        fetch('proses_absen.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            processingCover.classList.add('d-none');
+            renderFeedback(data, code);
+        })
+        .catch(err => {
+            processingCover.classList.add('d-none');
+            renderFeedback({
+                status: 'error',
+                message: 'Kendala Jaringan / Server: ' + err.message
+            }, code);
+        });
+    }
+
+    // 6. Tampilkan Notifikasi Feedback
+    function renderFeedback(res, rawCode) {
+        alertBox.classList.remove('d-none');
+        clearInterval(cooldownInterval);
+
+        const detRoleBadge  = document.getElementById('detRoleBadge');
+        const labelDetNis   = document.getElementById('labelDetNis');
+        const labelDetKelas = document.getElementById('labelDetKelas');
+
+        if (res.status === 'success') {
+            playAudio('success');
+
+            alertBox.className = "alert alert-success shadow-sm rounded-4 mb-3 border-success";
+            alertIconBox.className = "rounded-circle d-flex align-items-center justify-content-center p-2 text-white bg-success";
+            alertIcon.className = "bi bi-check-lg fs-4";
+
+            alertTitle.innerHTML = '<span class="text-success fw-bold"><i class="bi bi-patch-check-fill me-1"></i> Keterangan: SUDAH ABSEN</span>';
+            alertMessage.textContent = res.message || "Presensi berhasil dicatat dan diverifikasi.";
+
+            studentDetails.classList.remove('d-none');
+            if (res.data) {
+                const isGuru = (res.data.role === 'Guru');
+                if (detRoleBadge) detRoleBadge.textContent = isGuru ? 'GURU' : 'SISWA';
+                if (labelDetNis) labelDetNis.textContent = isGuru ? 'NIP:' : 'NIS:';
+                if (labelDetKelas) labelDetKelas.textContent = isGuru ? 'Tipe:' : 'Kelas:';
+
+                detNis.textContent   = isGuru ? (res.data.nip || rawCode) : (res.data.nis || rawCode);
+                detKelas.textContent = isGuru ? (res.data.tipe || 'Guru') : (res.data.kelas || '-');
+                detNama.textContent  = res.data.nama || '-';
+                detWaktu.textContent = (res.data.jam || '-') + ' WIB';
+
+                detStatusBadge.className = "badge bg-success text-white px-3 py-1";
+                detStatusBadge.textContent = "SUDAH ABSEN";
+            }
+        } 
+        else if (res.status === 'warning') {
+            playAudio('warning');
+
+            alertBox.className = "alert alert-warning shadow-sm rounded-4 mb-3 border-warning";
+            alertIconBox.className = "rounded-circle d-flex align-items-center justify-content-center p-2 text-dark bg-warning";
+            alertIcon.className = "bi bi-exclamation-triangle-fill fs-4";
+
+            alertTitle.innerHTML = '<span class="text-warning-emphasis fw-bold"><i class="bi bi-info-circle-fill me-1"></i> Keterangan: SUDAH ABSEN</span>';
+            alertMessage.textContent = res.message || "Pengguna ini sudah melakukan presensi hari ini.";
+
+            studentDetails.classList.remove('d-none');
+            if (res.data) {
+                const isGuru = (res.data.role === 'Guru');
+                if (detRoleBadge) detRoleBadge.textContent = isGuru ? 'GURU' : 'SISWA';
+                if (labelDetNis) labelDetNis.textContent = isGuru ? 'NIP:' : 'NIS:';
+                if (labelDetKelas) labelDetKelas.textContent = isGuru ? 'Tipe:' : 'Kelas:';
+
+                detNis.textContent   = isGuru ? (res.data.nip || rawCode) : (res.data.nis || rawCode);
+                detKelas.textContent = isGuru ? (res.data.tipe || 'Guru') : (res.data.kelas || '-');
+                detNama.textContent  = res.data.nama || '-';
+                detWaktu.textContent = (res.data.jam || res.data.waktu || '-') + ' WIB';
+                
+                detStatusBadge.className = "badge bg-warning text-dark px-3 py-1";
+                detStatusBadge.textContent = "SUDAH ABSEN";
+            }
+        } 
+        else {
+            playAudio('error');
+
+            alertBox.className = "alert alert-danger shadow-sm rounded-4 mb-3 border-danger";
+            alertIconBox.className = "rounded-circle d-flex align-items-center justify-content-center p-2 text-white bg-danger";
+            alertIcon.className = "bi bi-x-lg fs-4";
+
+            alertTitle.innerHTML = '<span class="text-danger fw-bold"><i class="bi bi-x-circle-fill me-1"></i> Presensi Gagal!</span>';
+            alertMessage.textContent = res.message || "Kode QR / Barcode tidak dikenali.";
+
+            studentDetails.classList.add('d-none');
+        }
+
+        // Mulai Countdown untuk reset kamera
+        startCountdown(3);
+    }
+
+    // 7. Reset Kamera & Siap Memindai Siswa Berikutnya
+    function startCountdown(seconds) {
+        let left = seconds;
+        cdSeconds.textContent = left + 's';
+
+        cooldownInterval = setInterval(() => {
+            left--;
+            cdSeconds.textContent = left + 's';
+
+            if (left <= 0) {
+                clearInterval(cooldownInterval);
+                resumeScanner();
+            }
+        }, 1000);
+    }
+
+    function resumeScanner() {
+        clearInterval(cooldownInterval);
+        isProcessing = false;
+
+        if (html5QrCode && isRunning) {
+            try {
+                html5QrCode.resume();
+            } catch (e) {}
+        }
+    }
+
+    btnQuickResume.addEventListener('click', function () {
+        resumeScanner();
+    });
+
+    // 8. Test Manual Submit
+    btnManualSubmit.addEventListener('click', function () {
+        const val = manualInput.value.trim();
+        if (val) {
+            onCodeScanned(val);
+            manualInput.value = '';
+        }
+    });
+
+    manualInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            btnManualSubmit.click();
+        }
+    });
+
+    // Sinkronisasi badge pilihan status kehadiran
+    document.querySelectorAll('input[name="status_pilihan"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const badge = document.getElementById('demoStatusBadge');
+            if (!badge) return;
+            const val = this.value;
+            if (val === '1') {
+                badge.className = 'badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1';
+                badge.textContent = 'SAKIT';
+            } else if (val === '2') {
+                badge.className = 'badge bg-info-subtle text-info border border-info-subtle px-2 py-1';
+                badge.textContent = 'IZIN';
+            } else {
+                badge.className = 'badge bg-success-subtle text-success border border-success-subtle px-2 py-1';
+                badge.textContent = 'HADIR';
+            }
+        });
+    });
+
+    // Jalankan inisialisasi kamera
+    initCameras();
+});
+</script>
+
+</body>
+</html>
