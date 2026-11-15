@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Presentasi — Sistem Absensi SMK NU WARGABINANGUN</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #0f172a;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide-canvas {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      max-width: 1200px;
+      max-height: 675px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .slide-hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="text-white select-none">
+
+  <!-- TOP BAR -->
+  <header class="h-14 bg-slate-900/90 border-b border-slate-800 px-6 flex items-center justify-between z-20">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-sky-600 flex items-center justify-center font-black text-xs shadow">
+        NU
+      </div>
+      <div>
+        <h1 class="text-xs font-extrabold text-white">SISTEM PRESENSI &amp; AI BOT • SMK NU WARGABINANGUN</h1>
+        <p class="text-[10px] text-slate-400">Slide Presentasi Resmi Rekayasa Perangkat Lunak (Durasi 24 Menit)</p>
+      </div>
+    </div>
+
+    <!-- Center Slide Counter -->
+    <div class="flex items-center bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-mono font-bold">
+      <button onclick="prevSlide()" class="hover:text-sky-400 px-2 transition"><i class="fa-solid fa-chevron-left"></i></button>
+      <span id="slide-num" class="text-sky-400 px-2">1 / 15</span>
+      <button onclick="nextSlide()" class="hover:text-sky-400 px-2 transition"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center space-x-2">
+      <button onclick="toggleNotes()" id="btn-notes" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg border border-slate-700 transition flex items-center gap-1.5 text-sky-400">
+        <i class="fa-solid fa-microphone-lines"></i> <span id="notes-text">Naskah Bicara (ON)</span>
+      </button>
+      <a href="PRESENTASI_SISTEM_ABSENSI_SMK_NU.pptx" download class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5">
+        <i class="fa-solid fa-file-powerpoint"></i> Unduh .PPTX
+      </a>
+      <button onclick="toggleFullscreen()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5">
+        <i class="fa-solid fa-expand"></i> Fullscreen
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SLIDE VIEWER AREA -->
+  <main class="flex-1 flex items-center justify-center p-6 overflow-hidden">
+    
+    <!-- =================================================================== -->
+    <!-- SLIDE 1: COVER                                                      -->
+    <!-- =================================================================== -->
+    <div id="slide-1" class="slide-canvas bg-slate-900 p-12 justify-between border border-slate-800" data-notes="Ucapkan salam formal pembukaan, perkenalkan nama kamu dari kompetensi keahlian Rekayasa Perangkat Lunak di SMK NU WARGABINANGUN, lalu jelaskan bahwa video 24 menit ini akan membedah PRD, UML, ERD, Prototipe Figma, hingga Live Demo aplikasi nyata.">
+      <div class="space-y-4">
+        <span class="px-3 py-1 bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-full text-xs font-extrabold uppercase tracking-widest">
+          Proyek Akhir Rekayasa Perangkat Lunak (RPL)
+        </span>
+        <h1 class="text-4xl font-black text-white leading-tight">
+          Sistem Presensi &amp; Absensi QR Code
+        </h1>
+        <h2 class="text-2xl font-bold text-sky-400">
+          Integrasi WhatsApp Gateway &amp; AI Chatbot Live Database Context (RAG)
+        </h2>
+      </div>
+
+      <div class="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/80 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-extrabold text-white">SMK NU WARGABINANGUN</h3>
+          <p class="text-xs text-slate-300 mt-1">Presenter: <b>[Sebutkan Nama Kamu]</b> • Kelas XII RPL • Tahun Ajaran 2026/2027</p>
+        </div>
+        <div class="text-right text-xs text-sky-400 font-semibold">
+          Durasi Maksimal: 24 Menit<br>
+          Arsitektur: PHP 8.2 MVC • MariaDB InnoDB
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 2: AGENDA                                                     -->
+    <!-- =================================================================== -->
+    <div id="slide-2" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Jelaskan 3 pilar presentasi: Bagian 1 PRD (latar belakang masalah di sekolah), Bagian 2 Perancangan teknis UML dan Basis Data, serta Bagian 3 Live Demo aplikasi nyata di browser.">
+      <div>
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">RUNDOWN PRESENTASI</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Struktur &amp; Alur Pembahasan (24 Menit)</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex gap-4 items-start">
+          <div class="w-10 h-10 rounded-lg bg-sky-600 text-white font-black text-lg flex items-center justify-center">01</div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-800">Product Requirement Document (PRD)</h4>
+            <p class="text-xs text-slate-500 mt-1">3 Masalah presensi manual di SMK NU, tujuan sistem, serta kebutuhan fungsional &amp; non-fungsional.</p>
+            <span class="text-[10px] font-bold text-sky-600 mt-2 block">Menit 02:00 – 05:30</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex gap-4 items-start">
+          <div class="w-10 h-10 rounded-lg bg-indigo-600 text-white font-black text-lg flex items-center justify-center">02</div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-800">Perancangan UML, Basis Data &amp; UI/UX</h4>
+            <p class="text-xs text-slate-500 mt-1">Bedah teknis Use Case, Activity Swimlane, Class Diagram MVC, Sequence Diagram, ERD, dan Prototipe Figma.</p>
+            <span class="text-[10px] font-bold text-indigo-600 mt-2 block">Menit 05:30 – 15:30</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex gap-4 items-start">
+          <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-black text-lg flex items-center justify-center">03</div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-800">Live Demo Aplikasi Nyata</h4>
+            <p class="text-xs text-slate-500 mt-1">Pengujian scanner webcam real-time, bunyi beep, bukti WhatsApp ke ponsel ortu, dan AI Chatbot live DB.</p>
+            <span class="text-[10px] font-bold text-emerald-600 mt-2 block">Menit 15:30 – 22:30</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex gap-4 items-start">
+          <div class="w-10 h-10 rounded-lg bg-amber-600 text-white font-black text-lg flex items-center justify-center">04</div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-800">Evaluasi &amp; Rencana Masa Depan</h4>
+            <p class="text-xs text-slate-500 mt-1">Dampak positif implementasi bagi sekolah, rencana fitur Face Recognition, dan salam penutup.</p>
+            <span class="text-[10px] font-bold text-amber-600 mt-2 block">Menit 22:30 – 24:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 3: PRD - 3 MASALAH UTAMA                                      -->
+    <!-- =================================================================== -->
+    <div id="slide-3" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Jelaskan 3 masalah nyata yang terjadi di SMK NU: 1. Presensi kertas rentan titip absen dan jam tidak akurat, 2. Orang tua was-was karena tidak tahu anaknya sampai sekolah atau membolos, 3. Wali kelas pusing merekap kertas berhari-hari.">
+      <div>
+        <p class="text-xs font-bold text-red-600 uppercase tracking-widest">PRODUCT REQUIREMENT DOCUMENT</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Latar Belakang: 3 Masalah Presensi Kertas Konvensional</h2>
+      </div>
+
+      <div class="grid grid-cols-3 gap-5">
+        <div class="bg-white p-6 rounded-2xl border-2 border-red-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-xl font-bold">⚠️</div>
+          <h4 class="text-sm font-extrabold text-slate-800">1. Kecurangan &amp; Waktu Tidak Presisi</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Presensi manual rentan titip absen atau pemalsuan tanda tangan. Jam kedatangan aktual tidak tercatat presisi detik demi detik.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border-2 border-amber-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold">📵</div>
+          <h4 class="text-sm font-extrabold text-slate-800">2. Orang Tua Was-was &amp; Tidak Tahu</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Tidak ada notifikasi ke rumah saat siswa tiba di sekolah. Orang tua baru tahu jika siswa membolos setelah berhari-hari kemudian.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border-2 border-purple-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold">⏳</div>
+          <h4 class="text-sm font-extrabold text-slate-800">3. Rekapitulasi Manual Memakan Waktu</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Wali kelas dan tata usaha harus menghitung ribuan baris kertas di akhir bulan. Risiko kertas absensi basah, sobek, atau tercecer.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-sky-50 p-3 rounded-xl border border-sky-200 text-sky-900 text-xs font-semibold flex items-center justify-between">
+        <span>💡 Solusi Digital: Memangkas waktu scan &lt;0.5 detik, WhatsApp otomatis ke ortu, dan rekap instan.</span>
+        <span class="font-bold">SMK NU WARGABINANGUN</span>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 4: PRD - SOLUSI & KEBUTUHAN FUNGSIONAL                        -->
+    <!-- =================================================================== -->
+    <div id="slide-4" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Jelaskan kebutuhan fungsional sistem: Universal QR Scanner yang cepat, cutoff jam 07:00:00 WIB, jeda cooldown guru 10 menit, WhatsApp gateway Fonnte otomatis, AI Chatbot live database, dan ekspor excel.">
+      <div>
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">PRODUCT REQUIREMENT DOCUMENT</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Kebutuhan Fungsional &amp; Fitur Utama Sistem</h2>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-extrabold text-sky-700">1. Universal QR Scanner</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Kamera peramban otomatis memindai kartu pelajar siswa dan kartu pegawai guru dalam &lt;0.5 detik.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-extrabold text-sky-700">2. Logika Cutoff 07:00:00 WIB</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Jam &le; 07:00:00 otomatis status 'Hadir'. Jam &gt; 07:00:00 otomatis status 'Terlambat'.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-extrabold text-sky-700">3. Cooldown 10 Menit Guru</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Mencegah double scan masuk/pulang guru dalam rentang waktu yang terlalu dekat.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-extrabold text-sky-700">4. Fonnte WA Gateway</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Pesan WhatsApp resmi berkop SMK NU terkirim otomatis ke ponsel orang tua murid dan dewan guru.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-extrabold text-sky-700">5. AI Chatbot Live DB (RAG)</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Asisten cerdas menjawab pertanyaan kehadiran &amp; jadwal KBM berdasarkan data riil MariaDB.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-extrabold text-sky-700">6. Rekapitulasi Excel &amp; PDF</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Ekspor laporan rekap kehadiran per kelas secara instan dengan kalkulasi persentase otomatis.</p>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 5: USE CASE DIAGRAM                                           -->
+    <!-- =================================================================== -->
+    <div id="slide-5" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Jelaskan Use Case Diagram: Ada 5 aktor manusia (Admin superuser, Guru, Siswa, Wali Kelas, Kepala Sekolah) dan 2 aktor eksternal (Fonnte WA Gateway dan Cloud LLM). Scan Barcode memiliki relasi include ke cutoff waktu dan kirim WhatsApp.">
+      <div>
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">PERANCANGAN UML</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Use Case Diagram — Batasan Sistem &amp; Interaksi Aktor</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <h4 class="text-xs font-extrabold text-sky-700 uppercase">5 Aktor Manusia &amp; Hak Akses:</h4>
+          <ul class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+            <li><b>1. Administrator:</b> Mengelola master data, akun, konfigurasi gateway WA, dan rekap global.</li>
+            <li><b>2. Guru:</b> Presensi masuk/pulang, cek jadwal KBM, dan riwayat pribadi.</li>
+            <li><b>3. Siswa:</b> Pemindaian kartu presensi dan akses mandiri data kehadirannya.</li>
+            <li><b>4. Wali Kelas:</b> Memantau dan mengunduh rekapan satu rombel kelas binaan.</li>
+            <li><b>5. Kepala Sekolah:</b> Pemantauan dashboard eksekutif persentase kehadiran sekolah.</li>
+          </ul>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <h4 class="text-xs font-extrabold text-purple-700 uppercase">2 Aktor Eksternal &amp; Relasi Sistem:</h4>
+          <ul class="text-xs text-slate-700 space-y-2 leading-relaxed">
+            <li><b>Fonnte WA Gateway:</b> Dipicu otomatis saat transaksi presensi tersimpan.</li>
+            <li><b>Cloud LLM Engine:</b> Menghasilkan respon inferensi cerdas pada AI Chatbot.</li>
+            <li><b>Relasi &lt;&lt;include&gt;&gt;:</b> Use case <i>Scan Barcode</i> mewajibkan eksekusi <i>Validasi Cutoff 07:00</i> dan <i>Kirim Notifikasi WA</i>.</li>
+            <li><b>Relasi &lt;&lt;extend&gt;&gt;:</b> Fitur ekspor Excel memperluas fungsi modul laporan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 6: ACTIVITY DIAGRAM SWIMLANE                                  -->
+    <!-- =================================================================== -->
+    <div id="slide-6" class="slide-canvas bg-slate-50 text-slate-900 p-6 justify-between slide-hidden" data-notes="Tunjukkan gambar Activity Diagram Swimlane. Jelaskan alur dari kiri ke kanan: Siswa/guru mengarahkan kartu -> Scanner kamera mendeteksi -> Backend memvalidasi cutoff 07:00 -> WhatsApp gateway mengirim pesan ke orang tua -> Kamera membunyikan nada beep dan popup hijau.">
+      <div class="px-4">
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">PERANCANGAN UML</p>
+        <h2 class="text-xl font-black text-slate-900">Activity Diagram Swimlane — Alur Presensi QR &amp; Alur AI</h2>
+      </div>
+
+      <div class="flex gap-4 px-4 items-center">
+        <div class="flex-1 bg-white p-2 rounded-xl border border-slate-200 shadow-sm max-h-[460px] overflow-hidden flex items-center justify-center">
+          <img src="activity_diagram_swimlane.png" class="max-h-[440px] object-contain rounded-lg">
+        </div>
+        <div class="w-80 bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+          <h4 class="font-bold text-sky-700">Poin Alur Swimlane:</h4>
+          <p><b>1. Scanner Kamera:</b> Pustaka Html5-Qrcode mendekode frame webcam real-time.</p>
+          <p><b>2. Percabangan Siswa:</b> Jam &le; 07:00 (Hadir), Jam &gt; 07:00 (Terlambat).</p>
+          <p><b>3. Percabangan Guru:</b> Jeda minimal 10 menit untuk scan jam pulang.</p>
+          <p><b>4. Fonnte Gateway:</b> Pesan WA terkirim asinkron tanpa memblokir antrean.</p>
+          <p><b>5. Umpan Balik:</b> Nada beep audio dan popup modal hijau muncul di layar gerbang.</p>
+        </div>
+      </div>
+
+      <div class="px-4 text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 7: CLASS DIAGRAM MVC                                          -->
+    <!-- =================================================================== -->
+    <div id="slide-7" class="slide-canvas bg-slate-50 text-slate-900 p-6 justify-between slide-hidden" data-notes="Tunjukkan gambar Class Diagram. Jelaskan 3 lapisan arsitektur MVC: Controller mengendalikan alur logika, Model berinteraksi dengan database via PDO Prepared Statements, dan Service seperti AiService mengelola komunikasi Cloud LLM. Database menggunakan Singleton.">
+      <div class="px-4">
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">PERANCANGAN UML</p>
+        <h2 class="text-xl font-black text-slate-900">Class Diagram — Arsitektur MVC PHP 8.2 Native</h2>
+      </div>
+
+      <div class="flex gap-4 px-4 items-center">
+        <div class="flex-1 bg-white p-2 rounded-xl border border-slate-200 shadow-sm max-h-[460px] overflow-hidden flex items-center justify-center">
+          <img src="class_diagram.png" class="max-h-[440px] object-contain rounded-lg">
+        </div>
+        <div class="w-80 bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+          <h4 class="font-bold text-sky-700">3 Lapisan MVC:</h4>
+          <p><b>• Controllers:</b> AbsensiController, ChatbotController, AdminBarcodeController, AuthController.</p>
+          <p><b>• Models:</b> AbsensiModel, SiswaModel, GuruModel, KelasModel, UserModel.</p>
+          <p><b>• Core &amp; Services:</b> AiService (REST API LLM), Database (Singleton Pattern), dan Csrf (Token Kriptografi).</p>
+          <p><b>• Keamanan:</b> Kebal SQL Injection berkat PDO Prepared Statements.</p>
+        </div>
+      </div>
+
+      <div class="px-4 text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 8: SEQUENCE DIAGRAM RUNTIME                                   -->
+    <!-- =================================================================== -->
+    <div id="slide-8" class="slide-canvas bg-slate-50 text-slate-900 p-6 justify-between slide-hidden" data-notes="Tunjukkan gambar Sequence Diagram. Jelaskan 19 langkah alur presensi: Tunjukkan kartu -> Dekode kamera -> POST scan -> Cek CSRF -> Kueri DB -> Simpan status -> Trigger WA gateway ke orang tua -> Respon popup hijau. Dan jelaskan 14 langkah alur AI RAG live database.">
+      <div class="px-4">
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">PERANCANGAN UML</p>
+        <h2 class="text-xl font-black text-slate-900">Sequence Diagram — Alur Pertukaran Pesan Runtime</h2>
+      </div>
+
+      <div class="flex gap-4 px-4 items-center">
+        <div class="flex-1 bg-white p-2 rounded-xl border border-slate-200 shadow-sm max-h-[460px] overflow-hidden flex items-center justify-center">
+          <img src="sequence_diagram.png" class="max-h-[440px] object-contain rounded-lg">
+        </div>
+        <div class="w-80 bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+          <h4 class="font-bold text-sky-700">Kronologi Runtime:</h4>
+          <p><b>• Skenario 1 (Presensi QR):</b> 19 langkah waktu eksekusi mulai dari pemindaian kamera hingga notifikasi WhatsApp masuk ke HP orang tua.</p>
+          <p><b>• Skenario 2 (AI Chatbot RAG):</b> 14 langkah injeksi data riil database ke Cloud LLM untuk menghasilkan balasan akurat bebas halusinasi.</p>
+        </div>
+      </div>
+
+      <div class="px-4 text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 9: ERD BASIS DATA MARIADB INNODB                              -->
+    <!-- =================================================================== -->
+    <div id="slide-9" class="slide-canvas bg-slate-50 text-slate-900 p-6 justify-between slide-hidden" data-notes="Tunjukkan gambar ERD Basis Data. Jelaskan 8 tabel: users, guru, siswa, kelas, jadwal, absensi_siswa, absensi_guru, chat_history. Terangkan relasi 1:1, 1:N, Primary Key, Foreign Key, dan aturan ON DELETE CASCADE untuk menjamin kebersihan data.">
+      <div class="px-4">
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">PERANCANGAN BASIS DATA</p>
+        <h2 class="text-xl font-black text-slate-900">Entity Relationship Diagram (ERD) — MariaDB InnoDB</h2>
+      </div>
+
+      <div class="flex gap-4 px-4 items-center">
+        <div class="flex-1 bg-white p-2 rounded-xl border border-slate-200 shadow-sm max-h-[460px] overflow-hidden flex items-center justify-center">
+          <img src="erd_diagram.png" class="max-h-[440px] object-contain rounded-lg">
+        </div>
+        <div class="w-80 bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+          <h4 class="font-bold text-sky-700">8 Entitas Utama:</h4>
+          <p><b>1. users:</b> Akun login terpusat (password Bcrypt).</p>
+          <p><b>2. guru &amp; siswa:</b> Relasi 1:1 ke tabel users.</p>
+          <p><b>3. kelas &amp; jadwal:</b> Pengaturan rombel &amp; KBM.</p>
+          <p><b>4. absensi_siswa &amp; guru:</b> Relasi 1:N log presensi.</p>
+          <p><b>5. chat_history:</b> Log percakapan asisten AI.</p>
+          <p><b>• ON DELETE CASCADE:</b> Menjamin integritas referensial data bersih tanpa rekam yatim.</p>
+        </div>
+      </div>
+
+      <div class="px-4 text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 10: PROTOTIPE INTERAKTIF FIGMA                                -->
+    <!-- =================================================================== -->
+    <div id="slide-10" class="slide-canvas bg-slate-50 text-slate-900 p-6 justify-between slide-hidden" data-notes="Tunjukkan gambar Prototipe Figma. Jelaskan bahwa sebelum dicoding, antarmuka dirancang interaktif di Figma: ada layar Login multi-role, Dashboard KPI, Scanner dengan animasi laser merah, preview cetak kartu pelajar barcode, dan floating widget AI Chatbot.">
+      <div class="px-4">
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">DESAIN ANTARMUKA PENGGUNA</p>
+        <h2 class="text-xl font-black text-slate-900">Prototipe Interaktif UI/UX — Figma Presentation Mode</h2>
+      </div>
+
+      <div class="flex gap-4 px-4 items-center">
+        <div class="flex-1 bg-white p-2 rounded-xl border border-slate-200 shadow-sm max-h-[460px] overflow-hidden flex items-center justify-center">
+          <img src="prototipe_figma_preview.png" class="max-h-[440px] object-contain rounded-lg">
+        </div>
+        <div class="w-80 bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+          <h4 class="font-bold text-sky-700">Fitur Prototipe Figma:</h4>
+          <p><b>• Clickable Prototype:</b> Tombol-tombol siap diklik untuk simulasi alur nyata.</p>
+          <p><b>• Multi-Role Switcher:</b> Pilihan login Admin, Guru, Siswa.</p>
+          <p><b>• Scanner Viewport:</b> Animasi laser dan popup notifikasi WhatsApp resmi.</p>
+          <p><b>• Cetak Kartu:</b> Simulasi fisik ID card tanda pelajar ber-barcode.</p>
+          <p><b>• AI Chatbot:</b> Obrolan cerdas live database.</p>
+        </div>
+      </div>
+
+      <div class="px-4 text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 11: LIVE DEMO - RUNDOWN PENGUJIAN                             -->
+    <!-- =================================================================== -->
+    <div id="slide-11" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Umumkan bahwa sekarang kita beralih ke Live Demo aplikasi nyata di browser: Buka localhost/sistemabsensi, login admin, tunjukkan dashboard, scan barcode Andi Pratama, buktikan pesan WA masuk ke HP ortu, coba fitur cetak kartu, dan uji tanya ke AI Chatbot.">
+      <div>
+        <p class="text-xs font-bold text-emerald-600 uppercase tracking-widest">LIVE DEMO APLIKASI NYATA</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Skenario Uji Coba Operasional Sistem</h2>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-bold text-emerald-700">1. Login &amp; Dashboard</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Login Admin, verifikasi 4 KPI kehadiran dan koneksi Fonnte WA Gateway online.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-bold text-emerald-700">2. Scan QR Kamera</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Arahkan kartu Andi Pratama (BC-SISWA-001) ke webcam: bunyi beep dan popup hijau muncul.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-bold text-emerald-700">3. Bukti Pesan WhatsApp</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Tunjukkan ponsel orang tua: notifikasi kehadiran resmi berkop SMK NU langsung masuk.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-bold text-emerald-700">4. Cetak Kartu Barcode</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Filter siswa per kelas dan cetak Kartu Tanda Pelajar fisik ber-barcode tajam.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-bold text-emerald-700">5. Uji AI Chatbot RAG</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Tanya statistik kehadiran ke AI: buktikan jawaban faktual bersumber dari tabel database.</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <h4 class="text-xs font-bold text-emerald-700">6. Ekspor Rekap Excel</h4>
+          <p class="text-[11px] text-slate-600 mt-1">Pilih tanggal dan unduh file laporan kehadiran resmi dalam format spreadsheet Excel.</p>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 12: BUKTI PENGUJIAN & HASIL                                   -->
+    <!-- =================================================================== -->
+    <div id="slide-12" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Paparkan hasil perbandingan sebelum vs sesudah sistem diterapkan: Waktu presensi turun dari 45 detik menjadi <0.5 detik, laporan ke orang tua menjadi real-time, kecurangan titip absen menjadi nol, dan rekapitulasi selesai dalam satu klik.">
+      <div>
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">HASIL PENGUJIAN</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Komparasi: Sistem Presensi Manual vs Digital SMK NU</h2>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+          <span class="font-bold text-slate-800">⏱️ Kecepatan Presensi per Orang</span>
+          <span class="text-slate-500">Manual: 30 – 45 Detik</span>
+          <span class="font-extrabold text-emerald-600">Sistem Digital: &lt; 0.5 Detik</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+          <span class="font-bold text-slate-800">📲 Transparansi ke Orang Tua</span>
+          <span class="text-slate-500">Manual: Tidak ada (Baru tahu jika dipanggil BK)</span>
+          <span class="font-extrabold text-emerald-600">Sistem Digital: Real-Time via WhatsApp Gateway</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+          <span class="font-bold text-slate-800">🚫 Celah Kecurangan (Titip Absen)</span>
+          <span class="text-slate-500">Manual: Tinggi (Tanda tangan mudah ditiru)</span>
+          <span class="font-extrabold text-emerald-600">Sistem Digital: Nol (Wajib bawa kartu fisik ber-barcode)</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+          <span class="font-bold text-slate-800">📊 Waktu Rekapitulasi Bulanan</span>
+          <span class="text-slate-500">Manual: 2 – 3 Hari kerja per wali kelas</span>
+          <span class="font-extrabold text-emerald-600">Sistem Digital: 1 Klik Ekspor Microsoft Excel</span>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+          <span class="font-bold text-slate-800">🤖 Akses Informasi Mandiri</span>
+          <span class="text-slate-500">Manual: Harus antre bertanya ke tata usaha</span>
+          <span class="font-extrabold text-emerald-600">Sistem Digital: 24/7 via Asisten AI Chatbot (RAG)</span>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 13: FITUR UNGGULAN AI CHATBOT (RAG)                           -->
+    <!-- =================================================================== -->
+    <div id="slide-13" class="slide-canvas bg-slate-900 text-white p-10 justify-between slide-hidden" data-notes="Jelaskan keunggulan AI Chatbot sekolah: Kenapa menggunakan RAG (Retrieval-Augmented Generation)? Karena chatbot biasa sering berhalusinasi mengarang angka, sedangkan sistem kita menginjeksi query SQL live ke prompt sehingga jawabannya 100% fakta riil database sekolah.">
+      <div>
+        <p class="text-xs font-bold text-purple-400 uppercase tracking-widest">FITUR INOVASI UNGGULAN</p>
+        <h2 class="text-2xl font-black text-white mt-1">Asisten AI Chatbot: Live Database Context (RAG)</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-slate-800/80 p-6 rounded-2xl border border-slate-700 space-y-3">
+          <h4 class="text-sm font-bold text-red-400">❌ Chatbot Tradisional Biasa:</h4>
+          <ul class="text-xs text-slate-300 space-y-2 leading-relaxed">
+            <li>• Hanya menjawab teks template atau karangan umum.</li>
+            <li>• Tidak mengetahui apakah siswa bersangkutan hadir atau terlambat hari ini.</li>
+            <li>• Rawan terjadi <b>halusinasi</b> data fiktif.</li>
+          </ul>
+        </div>
+
+        <div class="bg-gradient-to-br from-purple-900/60 to-indigo-900/60 p-6 rounded-2xl border border-purple-500/40 space-y-3">
+          <h4 class="text-sm font-bold text-emerald-400">✅ Asisten AI SMK NU (RAG Aktif):</h4>
+          <ul class="text-xs text-purple-100 space-y-2 leading-relaxed">
+            <li>• Menginterogasi basis data MariaDB secara live sebelum merangkai jawaban.</li>
+            <li>• Mengetahui riwayat kehadiran faktual: <i>"Halo Andi, Anda hadir 18 kali dan terlambat 1 kali bulan ini."</i></li>
+            <li>• 100% akurat, kontekstual, dan bebas halusinasi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 14: RENCANA PENGEMBANGAN MASA DEPAN                           -->
+    <!-- =================================================================== -->
+    <div id="slide-14" class="slide-canvas bg-slate-50 text-slate-900 p-10 justify-between slide-hidden" data-notes="Sampaikan rencana pengembangan masa depan: Menambahkan Face Recognition (biometrik wajah), aplikasi mobile Android/iOS untuk orang tua, dan integrasi IoT ke gerbang putar otomatis (turnstile).">
+      <div>
+        <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">ROADMAP &amp; FUTURE PLAN</p>
+        <h2 class="text-2xl font-black text-slate-900 mt-1">Rencana Pengembangan Sistem Masa Depan</h2>
+      </div>
+
+      <div class="grid grid-cols-3 gap-5">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl font-bold">👤</div>
+          <h4 class="text-sm font-bold text-slate-800">1. Biometrik Wajah (Face Recognition)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Menambahkan verifikasi wajah melalui kamera AI sebagai faktor autentikasi kedua (2FA) untuk mencegah kartu dipinjamkan.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold">📱</div>
+          <h4 class="text-sm font-bold text-slate-800">2. Aplikasi Mobile Android &amp; iOS</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Membangun aplikasi mobile bagi orang tua murid agar dapat melihat grafik kehadiran dan absensi langsung via notifikasi push.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold">🚪</div>
+          <h4 class="text-sm font-bold text-slate-800">3. Gerbang Otomatis (Turnstile IoT)</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Menghubungkan scan barcode ke perangkat solenoid relay untuk membuka pintu gerbang putar otomatis di sekolah.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-400">SMK NU WARGABINANGUN • RPL</div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SLIDE 15: KESIMPULAN & PENUTUP                                      -->
+    <!-- =================================================================== -->
+    <div id="slide-15" class="slide-canvas bg-slate-900 text-white p-12 justify-between border border-slate-800 slide-hidden" data-notes="Sampaikan kesimpulan penutup: Sistem ini sukses memodernisasi absensi sekolah menjadi cepat, transparan, dan cerdas. Ucapkan terima kasih kepada guru pembimbing dan penguji, mohon maaf atas kekurangan, dan tutup dengan salam formal.">
+      <div class="text-center space-y-3 max-w-2xl mx-auto my-auto">
+        <span class="px-4 py-1 bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-full text-xs font-bold uppercase tracking-wider">
+          KESIMPULAN &amp; PENUTUP
+        </span>
+        <h1 class="text-4xl font-black text-white mt-2">TERIMA KASIH!</h1>
+        <h3 class="text-xl font-bold text-sky-400">Sistem Presensi &amp; Absensi QR Code SMK NU WARGABINANGUN</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Solusi Digitalisasi Absensi Sekolah yang Cepat, Akurat, Transparan, dan Cerdas Berbasis Web &amp; Kecerdasan Buatan.
+        </p>
+        <p class="text-xs text-slate-400 pt-4">
+          Kompetensi Keahlian Rekayasa Perangkat Lunak (RPL) • SMK NU WARGABINANGUN
+        </p>
+      </div>
+
+      <div class="text-center text-[11px] text-slate-500">
+        Wabillahi taufiq wal hidayah, Wassalamu’alaikum Warahmatullahi Wabarakatuh.
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM SPEAKER NOTES DRAWER -->
+  <footer id="notes-drawer" class="bg-slate-900 border-t border-slate-800 p-4 z-20 flex flex-col max-h-48 transition-all">
+    <div class="flex items-center justify-between mb-1.5">
+      <span class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+        <i class="fa-solid fa-microphone text-xs"></i> Panduan Naskah Bicara Slide Ini:
+      </span>
+      <span class="text-[10px] text-slate-400">Gunakan tombol panah &larr; / &rarr; di keyboard untuk berpindah slide</span>
+    </div>
+    <div id="notes-content" class="text-xs text-slate-300 font-sans leading-relaxed overflow-y-auto">
+      Ucapkan salam formal pembukaan, perkenalkan nama kamu dari kompetensi keahlian Rekayasa Perangkat Lunak di SMK NU WARGABINANGUN, lalu jelaskan bahwa video 24 menit ini akan membedah PRD, UML, ERD, Prototipe Figma, hingga Live Demo aplikasi nyata.
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 15;
+    let showNotes = true;
+
+    function updateSlide() {
+      for(let i=1; i<=totalSlides; i++) {
+        const sl = document.getElementById(`slide-${i}`);
+        if(sl) {
+          if(i === currentSlide) {
+            sl.classList.remove('slide-hidden');
+            const notes = sl.getAttribute('data-notes') || 'Tidak ada catatan untuk slide ini.';
+            document.getElementById('notes-content').innerHTML = notes;
+          } else {
+            sl.classList.add('slide-hidden');
+          }
+        }
+      }
+      document.getElementById('slide-num').innerText = `${currentSlide} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+      if(currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if(currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleNotes() {
+      showNotes = !showNotes;
+      const drawer = document.getElementById('notes-drawer');
+      drawer.style.display = showNotes ? 'flex' : 'none';
+      document.getElementById('notes-text').innerText = showNotes ? 'Naskah Bicara (ON)' : 'Naskah Bicara (OFF)';
+      document.getElementById('btn-notes').classList.toggle('text-sky-400', showNotes);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if(e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if(e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
