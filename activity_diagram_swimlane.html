@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Diagram Swimlane — Sistem Presensi SMK NU WARGABINANGUN</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0f172a;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #canvas-container {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px;
+      cursor: grab;
+      user-select: none;
+    }
+    #canvas-container:active {
+      cursor: grabbing;
+    }
+    #svg-wrapper {
+      transform-origin: top center;
+      transition: transform 0.15s ease-out;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      background: white;
+    }
+  </style>
+</head>
+<body class="text-slate-100">
+
+  <!-- Top Navigation & Controls Bar -->
+  <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 font-bold">
+        📊
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+          UML Activity Diagram — Swimlane Vertikal 4 Jalur
+          <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold uppercase">Resmi v2.1</span>
+        </h1>
+        <p class="text-xs text-slate-400">SMK NU WARGABINANGUN • Alur Presensi QR, Fonnte WhatsApp Gateway &amp; Live DB AI Chatbot</p>
+      </div>
+    </div>
+
+    <!-- Zoom & Export Buttons -->
+    <div class="flex items-center gap-2 text-xs">
+      <div class="bg-slate-800 rounded-lg p-1 border border-slate-700 flex items-center gap-1">
+        <button onclick="zoomOut()" class="px-2.5 py-1.5 rounded hover:bg-slate-700 text-slate-300 hover:text-white font-bold transition" title="Zoom Out">−</button>
+        <span id="zoom-level" class="px-2 font-mono text-sky-400 font-semibold">100%</span>
+        <button onclick="zoomIn()" class="px-2.5 py-1.5 rounded hover:bg-slate-700 text-slate-300 hover:text-white font-bold transition" title="Zoom In">+</button>
+        <button onclick="resetZoom()" class="px-2.5 py-1.5 rounded hover:bg-slate-700 text-slate-300 hover:text-white font-medium transition" title="Reset">1:1</button>
+        <button onclick="fitWidth()" class="px-2.5 py-1.5 rounded hover:bg-slate-700 text-slate-300 hover:text-white font-medium transition" title="Fit Width">Fit</button>
+      </div>
+
+      <a href="./activity_diagram_swimlane.svg" download="Activity_Diagram_SMK_NU.svg" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 font-semibold text-slate-200 transition flex items-center gap-1.5">
+        📥 Unduh SVG
+      </a>
+      <a href="./activity_diagram_swimlane.png" download="Activity_Diagram_SMK_NU.png" class="px-3.5 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold transition flex items-center gap-1.5 shadow-lg shadow-sky-600/30">
+        🖼️ Unduh PNG HD
+      </a>
+      <button onclick="window.print()" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition flex items-center gap-1.5">
+        🖨️ Cetak / PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- Canvas Container -->
+  <div id="canvas-container">
+    <div id="svg-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2520" width="1600" height="2520" style="background-color: #FFFFFF;">
+    
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#475569" />
+      </marker>
+      <marker id="arrow-blue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#1565C0" />
+      </marker>
+      <marker id="arrow-orange" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#E65100" />
+      </marker>
+      <marker id="arrow-magenta" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#880E4F" />
+      </marker>
+      <marker id="arrow-green" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2E7D32" />
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08" flood-color="#0f172a" />
+      </filter>
+    </defs>
+    <rect width="1600" height="2520" fill="#FFFFFF" />
+    <!-- HEADER -->
+    <g id="diagram_header">
+      <text x="800" y="48" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="22" font-weight="800" fill="#0F172A" letter-spacing="-0.5">
+        ACTIVITY DIAGRAM — SISTEM INFORMASI PRESENSI &amp; ABSENSI SEKOLAH
+      </text>
+      <text x="800" y="74" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#0284C7">
+        SMK NU WARGABINANGUN
+      </text>
+      <text x="800" y="95" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="500" fill="#64748B">
+        Alur Proses Bisnis Utama: Multi-Role Auth, Universal QR Scanner, WhatsApp Fonnte Gateway &amp; AI Chatbot RAG
+      </text>
+    </g>
+    
+        <!-- LANE: Siswa &amp; Guru -->
+        <g id="lane_user">
+          <!-- Lane Background -->
+          <rect x="40" y="167" width="360" height="2223" fill="#F4F8FD" stroke="#CBD5E1" stroke-width="1.2" rx="0" />
+          
+          <!-- Lane Header Box -->
+          <rect x="40" y="115" width="360" height="52" fill="#1565C0" rx="8" stroke="#0F172A" stroke-opacity="0.1" />
+          <rect x="40" y="159" width="360" height="8" fill="#1565C0" />
+          
+          <!-- Header Text -->
+          <text x="220" y="139" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#FFFFFF">
+            Siswa &amp; Guru
+          </text>
+          <text x="220" y="157" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="500" fill="#E2E8F0">
+            Aktor Utama (Pengguna Presensi)
+          </text>
+        </g>
+        
+        <!-- LANE: Sistem Absensi -->
+        <g id="lane_system">
+          <!-- Lane Background -->
+          <rect x="420" y="167" width="380" height="2223" fill="#FFF9F2" stroke="#CBD5E1" stroke-width="1.2" rx="0" />
+          
+          <!-- Lane Header Box -->
+          <rect x="420" y="115" width="380" height="52" fill="#E65100" rx="8" stroke="#0F172A" stroke-opacity="0.1" />
+          <rect x="420" y="159" width="380" height="8" fill="#E65100" />
+          
+          <!-- Header Text -->
+          <text x="610" y="139" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#FFFFFF">
+            Sistem Absensi
+          </text>
+          <text x="610" y="157" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="500" fill="#E2E8F0">
+            Web Core, Database, WA &amp; AI Gateway
+          </text>
+        </g>
+        
+        <!-- LANE: Admin -->
+        <g id="lane_admin">
+          <!-- Lane Background -->
+          <rect x="820" y="167" width="360" height="2223" fill="#F2F9F4" stroke="#CBD5E1" stroke-width="1.2" rx="0" />
+          
+          <!-- Lane Header Box -->
+          <rect x="820" y="115" width="360" height="52" fill="#2E7D32" rx="8" stroke="#0F172A" stroke-opacity="0.1" />
+          <rect x="820" y="159" width="360" height="8" fill="#2E7D32" />
+          
+          <!-- Header Text -->
+          <text x="1000" y="139" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#FFFFFF">
+            Admin
+          </text>
+          <text x="1000" y="157" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="500" fill="#E2E8F0">
+            Tata Usaha / Operator Sekolah
+          </text>
+        </g>
+        
+        <!-- LANE: Wali Kelas, Kepsek &amp; Ortu -->
+        <g id="lane_wali_ortu">
+          <!-- Lane Background -->
+          <rect x="1200" y="167" width="360" height="2223" fill="#FDF2F5" stroke="#CBD5E1" stroke-width="1.2" rx="0" />
+          
+          <!-- Lane Header Box -->
+          <rect x="1200" y="115" width="360" height="52" fill="#880E4F" rx="8" stroke="#0F172A" stroke-opacity="0.1" />
+          <rect x="1200" y="159" width="360" height="8" fill="#880E4F" />
+          
+          <!-- Header Text -->
+          <text x="1380" y="139" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="14.5" font-weight="700" fill="#FFFFFF">
+            Wali Kelas, Kepsek &amp; Ortu
+          </text>
+          <text x="1380" y="157" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="500" fill="#E2E8F0">
+            Monitoring &amp; Penerima Manfaat
+          </text>
+        </g>
+        
+        <g id="start_node">
+          <circle cx="220" cy="195" r="14" fill="#0F172A" stroke="#FFFFFF" stroke-width="2.5" filter="url(#shadow)" />
+          <text x="220" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9.5" font-weight="700" fill="#475569">Mulai</text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 220 209 L 220 230" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="230" width="280" height="52" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+            <rect x="90" y="236" width="44.8" height="14" rx="3" fill="#1976D2" opacity="0.95" />
+            <text x="112.4" y="246.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Step 1</text>
+            
+          <text x="220.0" y="262" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Akses Web &amp; Input Kredensial
+          </text>
+          
+            <text x="220.0" y="276" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Input NIS / NIP / Username &amp; Password
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 220 282 L 220 305" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="305" width="280" height="48" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+          <text x="220.0" y="326" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Submit Form Login
+          </text>
+          
+            <text x="220.0" y="343" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Kirim Data Autentikasi via HTTP POST
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 360 329 L 470 329" fill="none" stroke="#1565C0" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="305" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="311" width="73.8" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="516.9" y="321.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Auth Engine</text>
+            
+          <text x="610.0" y="337" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Validasi Akun &amp; Keamanan Sesi
+          </text>
+          
+            <text x="610.0" y="351" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Cek Password Bcrypt &amp; Validasi Token CSRF
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 357 L 610 385" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="decision-node" filter="url(#shadow)">
+          <polygon points="610,385 646.45,412 610,439 573.55,412" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5" />
+          <text x="610" y="415.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#B45309">
+            Valid?
+          </text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 573 412 L 375 412 L 375 256 L 360 256" fill="none" stroke="#DC2626" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="403.7" y="398" width="52.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="430" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#DC2626">[Tidak]</text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 439 L 610 475" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="624.2" y="448" width="81.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="665" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Ya: Sukses]</text>
+            
+        </g>
+        
+        <g class="decision-node" filter="url(#shadow)">
+          <polygon points="610,475 646.45,502 610,529 573.55,502" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5" />
+          <text x="610" y="505.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#B45309">
+            Role?
+          </text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 573 502 L 220 502 L 220 545" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="293.4" y="488" width="93.2" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="340" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Siswa / Guru]</text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 647 502 L 1000 502 L 1000 545" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="783.7" y="488" width="52.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="810" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Admin]</text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 647 502 L 1380 502 L 1380 545" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="1159.2" y="488" width="81.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="1200" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Wali Kelas]</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="545" width="280" height="52" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+          <text x="220.0" y="566" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Dashboard Siswa / Guru
+          </text>
+          
+            <text x="220.0" y="583" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Tampil Kartu Pelajar QR, Riwayat &amp; Jadwal
+            </text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="860" y="545" width="280" height="52" rx="8" fill="#C8E6C9" stroke="#81C784" stroke-width="1.3" />
+          
+          <text x="1000.0" y="566" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#1B5E20">
+            Dashboard Administrator
+          </text>
+          
+            <text x="1000.0" y="583" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Statistik Absensi Sekolah, Master Data &amp; API
+            </text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="1240" y="545" width="280" height="52" rx="8" fill="#F8BBD0" stroke="#F06292" stroke-width="1.3" />
+          
+          <text x="1380.0" y="566" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#4A148C">
+            Dashboard Wali Kelas
+          </text>
+          
+            <text x="1380.0" y="583" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Statistik &amp; Monitoring Kelas Binaan
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1000 597 L 1000 635" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="860" y="635" width="280" height="50" rx="8" fill="#C8E6C9" stroke="#81C784" stroke-width="1.3" />
+          
+            <rect x="870" y="641" width="50.6" height="14" rx="3" fill="#388E3C" opacity="0.95" />
+            <text x="895.3" y="651.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Monitor</text>
+            
+          <text x="1000.0" y="667" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#1B5E20">
+            Monitoring Presensi Gerbang
+          </text>
+          
+            <text x="1000.0" y="681" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Pantau Log Scan Universal Masuk Real-Time
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1000 685 L 1000 720" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="860" y="720" width="280" height="50" rx="8" fill="#C8E6C9" stroke="#81C784" stroke-width="1.3" />
+          
+            <rect x="870" y="726" width="68.0" height="14" rx="3" fill="#388E3C" opacity="0.95" />
+            <text x="904.0" y="736.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Dispensasi</text>
+            
+          <text x="1000.0" y="752" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#1B5E20">
+            Input Surat Izin / Sakit Siswa
+          </text>
+          
+            <text x="1000.0" y="766" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Input Dispensasi Resmi &amp; Verifikasi Berkas
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 220 597 L 220 630" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="decision-node" filter="url(#shadow)">
+          <polygon points="220,630 249.7,652 220,674 190.3,652" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5" />
+          <text x="220" y="655.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#B45309">
+            Tanya AI?
+          </text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 220 674 L 220 705" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="222.5" y="679" width="45" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="245" y="691" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Ya]</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="705" width="280" height="52" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+            <rect x="90" y="711" width="50.6" height="14" rx="3" fill="#1976D2" opacity="0.95" />
+            <text x="115.3" y="721.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">AI Chat</text>
+            
+          <text x="220.0" y="737" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Buka Widget AI &amp; Input Pertanyaan
+          </text>
+          
+            <text x="220.0" y="751" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Tanya Rekap Kehadiran, Jadwal &amp; Info Sekolah
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 360 731 L 470 731" fill="none" stroke="#1565C0" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="705" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="711" width="68.0" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="514.0" y="721.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">AI Service</text>
+            
+          <text x="610.0" y="737" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Injeksi Konteks Database (RAG)
+          </text>
+          
+            <text x="610.0" y="751" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Kueri Data Riil SQL dari db_sistemabsensi
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 757 L 610 785" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="785" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="791" width="68.0" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="514.0" y="801.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">cURL HTTPS</text>
+            
+          <text x="610.0" y="817" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Kirim Prompt ke Cloud LLM API
+          </text>
+          
+            <text x="610.0" y="831" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              NVIDIA NIM / Gemini / OpenAI via cURL
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 837 L 610 865" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="865" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+          <text x="610.0" y="886" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Simpan Riwayat &amp; Render Respon
+          </text>
+          
+            <text x="610.0" y="903" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Insert log ke chat_history &amp; kirim JSON
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 470 891 L 360 891" fill="none" stroke="#E65100" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="865" width="280" height="52" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+          <text x="220.0" y="886" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Tampilkan Jawaban Faktual AI
+          </text>
+          
+            <text x="220.0" y="903" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Pengguna membaca jawaban bebas halusinasi
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 190 652 L 50 652 L 50 960 L 220 960 L 220 980" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="49.7" y="638" width="110.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="105" y="650" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Tidak: Presensi]</text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 220 917 L 220 980" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="980" width="280" height="55" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+            <rect x="90" y="986" width="62.199999999999996" height="14" rx="3" fill="#1976D2" opacity="0.95" />
+            <text x="121.1" y="996.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Scan Core</text>
+            
+          <text x="220.0" y="1012" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Scan QR / Presensi Mandiri
+          </text>
+          
+            <text x="220.0" y="1026" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Scan Kamera / USB Laser ATAU Tap Masuk Mandiri
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 360 1007 L 470 1007" fill="none" stroke="#1565C0" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="980" width="280" height="55" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="986" width="50.6" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="505.3" y="996.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Scanner</text>
+            
+          <text x="610.0" y="1012" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Pemindaian Frame &amp; Dekode Kode
+          </text>
+          
+            <text x="610.0" y="1026" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Library Html5-Qrcode ekstrak NIS / NIP / QR ID
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 1035 L 610 1070" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="decision-node" filter="url(#shadow)">
+          <polygon points="610,1070 646.45,1097 610,1124 573.55,1097" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5" />
+          <text x="610" y="1100.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#B45309">
+            Pengguna?
+          </text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 573 1097 L 510 1097 L 510 1135" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="508.7" y="1080" width="52.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="535" y="1092" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Siswa]</text>
+            
+        </g>
+        
+        <g class="decision-node" filter="url(#shadow)">
+          <polygon points="510,1135 539.7,1157 510,1179 480.3,1157" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5" />
+          <text x="510" y="1160.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#B45309">
+            Jam &lt;= 07:00?
+          </text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 480 1157 L 440 1157 L 440 1195" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="432.5" y="1139" width="45" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="455" y="1151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Ya]</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="425" y="1195" width="75" height="46" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+          <text x="462.5" y="1216" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            HADIR
+          </text>
+          
+            <text x="462.5" y="1233" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Tepat Waktu
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 540 1157 L 575 1157 L 575 1195" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="533.7" y="1139" width="52.6" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="560" y="1151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Tidak]</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="520" y="1195" width="80" height="46" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+          <text x="560.0" y="1216" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            TERLAMBAT
+          </text>
+          
+            <text x="560.0" y="1233" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Lewat 07:00
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 462 1241 L 462 1265 L 500 1265 L 500 1285" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 560 1241 L 560 1265 L 500 1265 L 500 1285" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="425" y="1285" width="175" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="435" y="1291" width="56.4" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="463.2" y="1301.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">DB Siswa</text>
+            
+          <text x="512.5" y="1317" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Simpan ke absensi_siswa
+          </text>
+          
+            <text x="512.5" y="1331" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Ambil nama_ortu &amp; no_hp_ortu
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 647 1097 L 710 1097 L 710 1135" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="661.6" y="1080" width="46.8" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="685" y="1092" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Guru]</text>
+            
+        </g>
+        
+        <g class="decision-node" filter="url(#shadow)">
+          <polygon points="710,1135 739.7,1157 710,1179 680.3,1157" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5" />
+          <text x="710" y="1160.5" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#B45309">
+            Scan Ke-?
+          </text>
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 680 1157 L 650 1157 L 650 1195" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="620.8" y="1139" width="58.4" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="650" y="1151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Scan 1]</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="620" y="1195" width="75" height="46" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+          <text x="657.5" y="1216" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Masuk
+          </text>
+          
+            <text x="657.5" y="1233" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Tepat/Telat
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 740 1157 L 770 1157 L 770 1195" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+            <rect x="735.8" y="1139" width="58.4" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="765" y="1151" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#475569">[Scan 2]</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="715" y="1195" width="75" height="46" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+          <text x="752.5" y="1216" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Pulang
+          </text>
+          
+            <text x="752.5" y="1233" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Jeda &gt; 10m
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 657 1241 L 657 1265 L 720 1265 L 720 1285" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 752 1241 L 752 1265 L 720 1265 L 720 1285" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="620" y="1285" width="170" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="630" y="1291" width="50.6" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="655.3" y="1301.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">DB Guru</text>
+            
+          <text x="705.0" y="1317" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Simpan ke absensi_guru
+          </text>
+          
+            <text x="705.0" y="1331" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Ambil kontak no_wa guru
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 512 1337 L 512 1365 L 610 1365 L 610 1385" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 705 1337 L 705 1365 L 610 1365 L 610 1385" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="1385" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="1391" width="68.0" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="514.0" y="1401.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Fonnte API</text>
+            
+          <text x="610.0" y="1417" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Trigger Fonnte WhatsApp Gateway
+          </text>
+          
+            <text x="610.0" y="1431" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              HTTP POST cURL: Target, Pesan Resmi &amp; 62
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 470 1411 L 360 1411" fill="none" stroke="#E65100" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="80" y="1385" width="280" height="52" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.3" />
+          
+            <rect x="90" y="1391" width="56.4" height="14" rx="3" fill="#1976D2" opacity="0.95" />
+            <text x="118.2" y="1401.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Feedback</text>
+            
+          <text x="220.0" y="1417" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0D47A1">
+            Umpan Balik Layar Scanner
+          </text>
+          
+            <text x="220.0" y="1431" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Popup Hijau/Kuning + Nada Beep Konfirmasi
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 750 1411 L 1240 1411" fill="none" stroke="#880E4F" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrow-magenta)" />
+          
+            <rect x="955.0" y="1392" width="70.0" height="17" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+            <text x="990" y="1404" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#880E4F">Webhook WA</text>
+            
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="1240" y="1385" width="280" height="52" rx="8" fill="#F8BBD0" stroke="#F06292" stroke-width="1.3" />
+          
+            <rect x="1250" y="1391" width="85.39999999999999" height="14" rx="3" fill="#C2185B" opacity="0.95" />
+            <text x="1292.7" y="1401.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">WhatsApp Ortu</text>
+            
+          <text x="1380.0" y="1417" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#4A148C">
+            Pesan WhatsApp Diterima Ortu Siswa
+          </text>
+          
+            <text x="1380.0" y="1431" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Kop SMK NU: Nama Siswa, Waktu &amp; Status Absen
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1380 1437 L 1380 1475" fill="none" stroke="#880E4F" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrow-magenta)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="1240" y="1475" width="280" height="52" rx="8" fill="#F8BBD0" stroke="#F06292" stroke-width="1.3" />
+          
+            <rect x="1250" y="1481" width="85.39999999999999" height="14" rx="3" fill="#C2185B" opacity="0.95" />
+            <text x="1292.7" y="1491.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">WhatsApp Guru</text>
+            
+          <text x="1380.0" y="1507" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#4A148C">
+            Konfirmasi WhatsApp Diterima Guru
+          </text>
+          
+            <text x="1380.0" y="1521" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Konfirmasi Jam Masuk / Jam Pulang Kerja
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1000 770 L 1000 1565" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="860" y="1565" width="280" height="52" rx="8" fill="#C8E6C9" stroke="#81C784" stroke-width="1.3" />
+          
+            <rect x="870" y="1571" width="73.8" height="14" rx="3" fill="#388E3C" opacity="0.95" />
+            <text x="906.9" y="1581.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Master Data</text>
+            
+          <text x="1000.0" y="1597" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#1B5E20">
+            Kelola Master Data &amp; Kontak
+          </text>
+          
+            <text x="1000.0" y="1611" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              CRUD Siswa (No HP Ortu), Guru (No WA), Kelas, Jadwal
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1000 1617 L 1000 1650" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="860" y="1650" width="280" height="52" rx="8" fill="#C8E6C9" stroke="#81C784" stroke-width="1.3" />
+          
+            <rect x="870" y="1656" width="79.6" height="14" rx="3" fill="#388E3C" opacity="0.95" />
+            <text x="909.8" y="1666.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">QR Generator</text>
+            
+          <text x="1000.0" y="1682" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#1B5E20">
+            Generate &amp; Cetak Kartu QR Massal
+          </text>
+          
+            <text x="1000.0" y="1696" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Batch Print Kartu Pelajar Satu Rombel Kelas
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1000 1702 L 1000 1735" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="860" y="1735" width="280" height="52" rx="8" fill="#C8E6C9" stroke="#81C784" stroke-width="1.3" />
+          
+            <rect x="870" y="1741" width="68.0" height="14" rx="3" fill="#388E3C" opacity="0.95" />
+            <text x="904.0" y="1751.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">API Config</text>
+            
+          <text x="1000.0" y="1767" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#1B5E20">
+            Setting Integrasi API &amp; Model AI
+          </text>
+          
+            <text x="1000.0" y="1781" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Konfigurasi Token Fonnte WA &amp; Kunci API LLM
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 860 1761 L 750 1761" fill="none" stroke="#2E7D32" stroke-width="1.5"  marker-end="url(#arrow-green)" />
+          
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 1437 L 610 1735 L 610 1785" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="1785" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="1791" width="68.0" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="514.0" y="1801.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Auto-Alpha</text>
+            
+          <text x="610.0" y="1817" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Scheduler Auto-Alpha (07:00 WIB)
+          </text>
+          
+            <text x="610.0" y="1831" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Cek Siswa &amp; Guru yang Belum Memiliki Presensi
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 1837 L 610 1870" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="1870" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="1876" width="50.6" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="505.3" y="1886.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">DB Sync</text>
+            
+          <text x="610.0" y="1902" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Set Status Alpha (3) Massal
+          </text>
+          
+            <text x="610.0" y="1916" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Eksekusi Otomatis; Auto-Update jika Hadir Kemudian
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 750 1896 L 1240 1896" fill="none" stroke="#880E4F" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="1240" y="1870" width="280" height="52" rx="8" fill="#F8BBD0" stroke="#F06292" stroke-width="1.3" />
+          
+            <rect x="1250" y="1876" width="68.0" height="14" rx="3" fill="#C2185B" opacity="0.95" />
+            <text x="1284.0" y="1886.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Wali Kelas</text>
+            
+          <text x="1380.0" y="1902" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#4A148C">
+            Wali Kelas: Monitoring &amp; Dispensasi
+          </text>
+          
+            <text x="1380.0" y="1916" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Verifikasi Surat Sakit / Izin &amp; Rekap Kelas Binaan
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1380 1922 L 1380 1960" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="1240" y="1960" width="280" height="52" rx="8" fill="#F8BBD0" stroke="#F06292" stroke-width="1.3" />
+          
+            <rect x="1250" y="1966" width="44.8" height="14" rx="3" fill="#C2185B" opacity="0.95" />
+            <text x="1272.4" y="1976.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Kepsek</text>
+            
+          <text x="1380.0" y="1992" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#4A148C">
+            Kepala Sekolah: Monitoring Eksekutif
+          </text>
+          
+            <text x="1380.0" y="2006" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Pantau Rasio Kedisiplinan &amp; Tren Kehadiran Sekolah
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 1240 1986 L 610 1986 L 610 2050" fill="none" stroke="#880E4F" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g class="activity-node" filter="url(#shadow)">
+          <rect x="470" y="2050" width="280" height="52" rx="8" fill="#FFE0B2" stroke="#FFB74D" stroke-width="1.3" />
+          
+            <rect x="480" y="2056" width="85.39999999999999" height="14" rx="3" fill="#E65100" opacity="0.95" />
+            <text x="522.7" y="2066.5" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.5" font-weight="700" fill="#FFFFFF">Export Report</text>
+            
+          <text x="610.0" y="2082" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#BF360C">
+            Rekapitulasi Bulanan &amp; Ekspor
+          </text>
+          
+            <text x="610.0" y="2096" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.8" font-weight="500" fill="#475569">
+              Cetak Laporan Presensi Excel, CSV &amp; Cetak PDF
+            </text>
+            
+        </g>
+        
+        <g class="flow-arrow">
+          <path d="M 610 2102 L 610 2150" fill="none" stroke="#475569" stroke-width="1.5"  marker-end="url(#arrow)" />
+          
+        </g>
+        
+        <g id="end_node">
+          <circle cx="610" cy="2175" r="17" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5" filter="url(#shadow)" />
+          <circle cx="610" cy="2175" r="10" fill="#0F172A" />
+          <text x="610" y="2205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9.5" font-weight="700" fill="#475569">Selesai</text>
+        </g>
+        
+    <!-- LEGENDA -->
+    <g id="diagram_legend">
+      <rect x="40" y="2270" width="1520" height="55" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#shadow)" />
+      
+      <!-- Label LEGENDA -->
+      <text x="65" y="2303" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="800" fill="#0F172A">
+        LEGENDA:
+      </text>
+      
+      <!-- Item 1: Start -->
+      <circle cx="160" cy="2298" r="8" fill="#0F172A" />
+      <text x="178" y="2302" font-family="Arial, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Titik Awal (Start)</text>
+      
+      <!-- Item 2: End -->
+      <circle cx="320" cy="2298" r="9" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.6" />
+      <circle cx="320" cy="2298" r="5" fill="#0F172A" />
+      <text x="338" y="2302" font-family="Arial, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Titik Akhir (End)</text>
+      
+      <!-- Item 3: Aktivitas -->
+      <rect x="470" y="2288" width="34" height="20" rx="4" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.2" />
+      <text x="514" y="2302" font-family="Arial, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Aktivitas / Proses</text>
+      
+      <!-- Item 4: Decision -->
+      <polygon points="665,2287 678,2298 665,2309 652,2298" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.3" />
+      <text x="688" y="2302" font-family="Arial, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Keputusan (Decision)</text>
+      
+      <!-- Item 5: Alur Proses -->
+      <line x1="845" y1="2298" x2="880" y2="2298" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)" />
+      <text x="890" y="2302" font-family="Arial, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Alur Kontrol Utama</text>
+      
+      <!-- Item 6: Integrasi WA / API -->
+      <line x1="1040" y1="2298" x2="1080" y2="2298" stroke="#880E4F" stroke-width="1.6" stroke-dasharray="4,3" marker-end="url(#arrow-magenta)" />
+      <text x="1090" y="2302" font-family="Arial, sans-serif" font-size="9.5" font-weight="600" fill="#475569">Notifikasi WhatsApp / API (Async)</text>
+      
+      <!-- Signature / School Badge -->
+      <text x="1530" y="2302" text-anchor="end" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#0284C7">
+        SMK NU WARGABINANGUN • SISTEM PRESENSI v2.1
+      </text>
+    </g>
+    
+    </svg>
+    </div>
+  </div>
+
+  <script>
+    let currentZoom = 0.85;
+    const wrapper = document.getElementById('svg-wrapper');
+    const zoomText = document.getElementById('zoom-level');
+    const container = document.getElementById('canvas-container');
+
+    function applyZoom() {
+      wrapper.style.transform = `scale(${currentZoom})`;
+      zoomText.textContent = `${Math.round(currentZoom * 100)}%`;
+    }
+
+    function zoomIn() {
+      currentZoom = Math.min(currentZoom + 0.15, 2.5);
+      applyZoom();
+    }
+
+    function zoomOut() {
+      currentZoom = Math.max(currentZoom - 0.15, 0.3);
+      applyZoom();
+    }
+
+    function resetZoom() {
+      currentZoom = 1.0;
+      applyZoom();
+    }
+
+    function fitWidth() {
+      const availableWidth = container.clientWidth - 48;
+      currentZoom = Math.max(availableWidth / 1600, 0.35);
+      applyZoom();
+    }
+
+    // Fit on load
+    window.addEventListener('DOMContentLoaded', () => {
+      fitWidth();
+    });
+
+    // Pan with mouse drag
+    let isDown = false;
+    let startX, startY, scrollLeft, scrollTop;
+
+    container.addEventListener('mousedown', (e) => {
+      if (e.target.closest('button') || e.target.closest('a')) return;
+      isDown = true;
+      startX = e.pageX - container.offsetLeft;
+      startY = e.pageY - container.offsetTop;
+      scrollLeft = container.scrollLeft;
+      scrollTop = container.scrollTop;
+    });
+
+    container.addEventListener('mouseleave', () => { isDown = false; });
+    container.addEventListener('mouseup', () => { isDown = false; });
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const y = e.pageY - container.offsetTop;
+      const walkX = (x - startX) * 1.5;
+      const walkY = (y - startY) * 1.5;
+      container.scrollLeft = scrollLeft - walkX;
+      container.scrollTop = scrollTop - walkY;
+    });
+  </script>
+</body>
+</html>
