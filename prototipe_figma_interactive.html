@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Figma Interactive Prototype — Sistem Absensi SMK NU WARGABINANGUN</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+    }
+    
+    body {
+      background-color: #18181b;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* Figma Prototype Canvas Frame */
+    .figma-device {
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafc;
+      width: 1240px;
+      min-height: 780px;
+      transition: all 0.25s ease;
+    }
+
+    /* Hotspot pulse effect when clicking empty area */
+    .hotspot-active {
+      outline: 3px solid #0284c7 !important;
+      animation: hotspot-glow 0.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes hotspot-glow {
+      from { box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.4); }
+      to { box-shadow: 0 0 12px 6px rgba(2, 132, 199, 0.8); }
+    }
+
+    /* Scanner laser animation */
+    @keyframes laser-sweep {
+      0% { top: 10%; opacity: 0.8; }
+      50% { top: 90%; opacity: 1; }
+      100% { top: 10%; opacity: 0.8; }
+    }
+    .laser-line {
+      animation: laser-sweep 2s ease-in-out infinite;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- ========================================================================= -->
+  <!-- TOP FIGMA TOOLBAR BAR (MIRROR MODE)                                       -->
+  <!-- ========================================================================= -->
+  <header class="bg-zinc-900 border-b border-zinc-800 text-white px-5 py-2.5 flex items-center justify-between sticky top-0 z-50 shadow-md">
+    <!-- Left: Figma Title & Brand -->
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center font-black text-sm shadow">
+        ❖
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-bold text-white tracking-tight">Sistem Absensi SMK NU</span>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            ● Figma Flow Interactive
+          </span>
+        </div>
+        <p class="text-[11px] text-zinc-400">Arsitektur UI/UX: Universal QR Scanner, WhatsApp Gateway &amp; AI Chatbot RAG</p>
+      </div>
+    </div>
+
+    <!-- Center: Interactive Screen Navigation / Flow Switcher -->
+    <div class="flex items-center bg-zinc-800 p-1 rounded-lg border border-zinc-700/60">
+      <button onclick="goToScreen('screen-login')" id="btn-tab-login" class="px-3 py-1.5 rounded-md text-xs font-semibold text-zinc-300 hover:text-white transition flex items-center gap-1.5">
+        <i class="fa-solid fa-lock text-[11px]"></i> 1. Login
+      </button>
+      <button onclick="goToScreen('screen-dashboard')" id="btn-tab-dashboard" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-sky-600 text-white shadow transition flex items-center gap-1.5">
+        <i class="fa-solid fa-gauge text-[11px]"></i> 2. Dashboard
+      </button>
+      <button onclick="goToScreen('screen-scan')" id="btn-tab-scan" class="px-3 py-1.5 rounded-md text-xs font-semibold text-zinc-300 hover:text-white transition flex items-center gap-1.5">
+        <i class="fa-solid fa-qrcode text-[11px]"></i> 3. QR Scanner
+      </button>
+      <button onclick="goToScreen('screen-siswa')" id="btn-tab-siswa" class="px-3 py-1.5 rounded-md text-xs font-semibold text-zinc-300 hover:text-white transition flex items-center gap-1.5">
+        <i class="fa-solid fa-id-card text-[11px]"></i> 4. ID Card Barcode
+      </button>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center space-x-2.5">
+      <button onclick="toggleHotspots()" id="btn-hotspot" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium rounded-lg border border-zinc-700 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-bullseye text-sky-400"></i> <span id="hotspot-text">Petunjuk Klik (ON)</span>
+      </button>
+      <button onclick="restartPrototype()" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium rounded-lg border border-zinc-700 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-rotate-right text-xs"></i> Reset
+      </button>
+      <a href="erd_diagram.html" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5">
+        <i class="fa-solid fa-database text-xs"></i> Buka ERD Visual
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN WORKSPACE CANVAS                                                     -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 flex flex-col items-center justify-start p-6 overflow-y-auto" onclick="handleCanvasClick(event)">
+
+    <!-- Instruction Badge -->
+    <div class="mb-4 text-xs font-medium text-zinc-400 flex items-center gap-2 bg-zinc-900/80 px-4 py-1.5 rounded-full border border-zinc-800">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span>Simulasi Figma Aktif: Klik tombol berwarna biru/hijau pada layar untuk berpindah halaman atau menguji fitur interaktif.</span>
+    </div>
+
+    <!-- DEVICE FRAME CONTAINER -->
+    <div class="figma-device relative">
+
+      <!-- =================================================================== -->
+      <!-- SCREEN 1: LOGIN MULTI-ROLE SCREEN                                   -->
+      <!-- =================================================================== -->
+      <div id="screen-login" class="screen-view hidden flex flex-col items-center justify-center min-h-[760px] bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 p-8">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-slate-100">
+          <div class="text-center mb-6">
+            <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-sky-600 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-sky-600/30">
+              NU
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-800">SISTEM PRESENSI QR</h2>
+            <p class="text-xs text-slate-500 font-semibold tracking-wide mt-1">SMK NU WARGABINANGUN</p>
+          </div>
+
+          <!-- Role Selector Tabs -->
+          <div class="flex bg-slate-100 p-1 rounded-xl mb-5">
+            <button onclick="selectLoginRole('admin')" id="role-admin" class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-white text-sky-600 shadow-sm transition">
+              Admin
+            </button>
+            <button onclick="selectLoginRole('guru')" id="role-guru" class="flex-1 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-700 transition">
+              Guru
+            </button>
+            <button onclick="selectLoginRole('siswa')" id="role-siswa" class="flex-1 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-700 transition">
+              Siswa
+            </button>
+          </div>
+
+          <form onsubmit="event.preventDefault(); goToScreen('screen-dashboard');" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Username / NIP / NIS</label>
+              <div class="relative">
+                <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
+                <input id="input-username" type="text" value="admin" class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-sky-500 font-medium text-slate-700">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi</label>
+              <div class="relative">
+                <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
+                <input type="password" value="password" class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-sky-500 font-medium text-slate-700">
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+              <label class="flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-sky-600"> Ingat sesi saya
+              </label>
+              <span class="text-sky-600 font-semibold cursor-pointer">Bantuan Akses?</span>
+            </div>
+
+            <button type="submit" class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-extrabold rounded-xl shadow-lg shadow-sky-600/30 transition flex items-center justify-center gap-2">
+              <span>Masuk ke Sistem</span>
+              <i class="fa-solid fa-arrow-right text-[11px]"></i>
+            </button>
+          </form>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 text-center">
+            <span class="text-[10px] text-slate-400">Hak Cipta © 2026 SMK NU WARGABINANGUN • RPL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- SCREEN 2: DASHBOARD ADMIN                                           -->
+      <!-- =================================================================== -->
+      <div id="screen-dashboard" class="screen-view flex min-h-[760px] bg-slate-50">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-slate-900 text-white flex flex-col border-r border-slate-800">
+          <div class="p-5 flex items-center space-x-3 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-xl bg-sky-600 flex items-center justify-center text-white font-extrabold text-base shadow">
+              NU
+            </div>
+            <div>
+              <h3 class="text-xs font-extrabold text-white tracking-wide">SMK NU</h3>
+              <p class="text-[10px] text-sky-400 font-semibold">PRESENSI &amp; AI BOT</p>
+            </div>
+          </div>
+
+          <nav class="flex-1 p-3 space-y-1 text-xs font-semibold">
+            <a onclick="goToScreen('screen-dashboard')" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-sky-600 text-white shadow-sm cursor-pointer">
+              <i class="fa-solid fa-house w-4 text-center"></i> Dashboard
+            </a>
+            <a onclick="goToScreen('screen-scan')" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
+              <i class="fa-solid fa-camera w-4 text-center text-sky-400"></i> Universal Scanner QR
+            </a>
+            <a onclick="goToScreen('screen-siswa')" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
+              <i class="fa-solid fa-users w-4 text-center"></i> Data Siswa &amp; Barcode
+            </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
+              <i class="fa-solid fa-chalkboard-user w-4 text-center"></i> Data Guru
+            </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer">
+              <i class="fa-solid fa-file-lines w-4 text-center"></i> Rekap Laporan Excel
+            </a>
+            <a onclick="toggleChatbot()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-purple-300 hover:bg-purple-900/30 transition cursor-pointer border border-purple-500/20">
+              <i class="fa-solid fa-robot w-4 text-center text-purple-400"></i> AI Chatbot (RAG)
+            </a>
+          </nav>
+
+          <div class="p-3 border-t border-slate-800">
+            <div class="flex items-center gap-3 px-2 py-2">
+              <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-sky-400">
+                AD
+              </div>
+              <div class="flex-1 overflow-hidden">
+                <p class="text-xs font-bold text-white truncate">Administrator</p>
+                <p class="text-[10px] text-slate-400">admin@smknu.sch.id</p>
+              </div>
+              <button onclick="goToScreen('screen-login')" class="text-slate-400 hover:text-red-400 text-xs">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+          <!-- Top bar -->
+          <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-extrabold text-slate-800">Ringkasan Presensi Hari Ini</h2>
+              <p class="text-xs text-slate-500 font-medium">Senin, 15 November 2026 • Cutoff Toleransi: 07:00:00 WIB</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button onclick="goToScreen('screen-scan')" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-2">
+                <i class="fa-solid fa-qrcode"></i> Buka Scanner Kamera
+              </button>
+              <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs" title="Fonnte WA Gateway Online">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+              </div>
+            </div>
+          </header>
+
+          <!-- Metrics 4 KPI Cards -->
+          <div class="p-8 space-y-6">
+            <div class="grid grid-cols-4 gap-5">
+              <!-- KPI 1 -->
+              <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Hadir Tepat Waktu</span>
+                  <h3 class="text-2xl font-black text-slate-800 mt-1">482 <span class="text-xs font-semibold text-emerald-500">92.4%</span></h3>
+                  <p class="text-[11px] text-slate-500 mt-1">Sebelum 07:00:00 WIB</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                  <i class="fa-solid fa-user-check"></i>
+                </div>
+              </div>
+
+              <!-- KPI 2 -->
+              <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Terlambat</span>
+                  <h3 class="text-2xl font-black text-amber-600 mt-1">18 <span class="text-xs font-semibold text-amber-500">3.5%</span></h3>
+                  <p class="text-[11px] text-slate-500 mt-1">Notifikasi WA terkirim</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+              </div>
+
+              <!-- KPI 3 -->
+              <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Sakit / Izin</span>
+                  <h3 class="text-2xl font-black text-sky-600 mt-1">12 <span class="text-xs font-semibold text-sky-500">2.3%</span></h3>
+                  <p class="text-[11px] text-slate-500 mt-1">Surat terverifikasi</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl font-bold">
+                  <i class="fa-solid fa-notes-medical"></i>
+                </div>
+              </div>
+
+              <!-- KPI 4 -->
+              <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Guru Hadir</span>
+                  <h3 class="text-2xl font-black text-indigo-600 mt-1">38 <span class="text-xs font-semibold text-indigo-500">100%</span></h3>
+                  <p class="text-[11px] text-slate-500 mt-1">Cooldown 10 Menit Aktif</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Two-column Section: Live Scanner Activity & Quick Action -->
+            <div class="grid grid-cols-3 gap-6">
+              
+              <!-- Left: Live Attendance Feed Table -->
+              <div class="col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Log Presensi Real-Time Terkini
+                  </h4>
+                  <span class="text-xs text-slate-400 font-semibold">Tersinkron MariaDB InnoDB</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs">
+                    <thead>
+                      <tr class="border-b border-slate-100 text-slate-400 font-bold uppercase text-[10px]">
+                        <th class="py-2.5 px-3">Waktu</th>
+                        <th class="py-2.5 px-3">Nama Siswa / Guru</th>
+                        <th class="py-2.5 px-3">Kelas / Peran</th>
+                        <th class="py-2.5 px-3">Status</th>
+                        <th class="py-2.5 px-3 text-right">Status WA</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                      <tr>
+                        <td class="py-3 px-3 font-mono font-bold text-slate-700">06:52:14</td>
+                        <td class="py-3 px-3 font-bold text-slate-800">Andi Pratama</td>
+                        <td class="py-3 px-3 text-slate-500">X RPL 1</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Hadir</span></td>
+                        <td class="py-3 px-3 text-right text-emerald-600 font-semibold"><i class="fa-solid fa-check-double text-[10px]"></i> Terkirim</td>
+                      </tr>
+                      <tr>
+                        <td class="py-3 px-3 font-mono font-bold text-slate-700">06:55:40</td>
+                        <td class="py-3 px-3 font-bold text-slate-800">Bunga Citra</td>
+                        <td class="py-3 px-3 text-slate-500">X RPL 1</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Hadir</span></td>
+                        <td class="py-3 px-3 text-right text-emerald-600 font-semibold"><i class="fa-solid fa-check-double text-[10px]"></i> Terkirim</td>
+                      </tr>
+                      <tr>
+                        <td class="py-3 px-3 font-mono font-bold text-slate-700">07:08:12</td>
+                        <td class="py-3 px-3 font-bold text-slate-800">Cahyo Purnomo</td>
+                        <td class="py-3 px-3 text-slate-500">X RPL 2</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">Terlambat</span></td>
+                        <td class="py-3 px-3 text-right text-amber-600 font-semibold"><i class="fa-solid fa-check-double text-[10px]"></i> Notif Terlambat</td>
+                      </tr>
+                      <tr>
+                        <td class="py-3 px-3 font-mono font-bold text-slate-700">06:40:00</td>
+                        <td class="py-3 px-3 font-bold text-slate-800">Ahmad Dahlan, S.Kom</td>
+                        <td class="py-3 px-3 text-slate-500">Guru Produktif RPL</td>
+                        <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-700">Hadir Masuk</span></td>
+                        <td class="py-3 px-3 text-right text-emerald-600 font-semibold"><i class="fa-solid fa-check-double text-[10px]"></i> Terkirim</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Right: Quick Cards & AI Assistant Banner -->
+              <div class="space-y-4">
+                <div class="bg-gradient-to-br from-purple-700 to-indigo-900 text-white rounded-2xl p-6 shadow-md relative overflow-hidden">
+                  <div class="relative z-10">
+                    <span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">AI Context RAG</span>
+                    <h4 class="text-sm font-extrabold mt-2">Tanya Asisten Cerdas</h4>
+                    <p class="text-xs text-purple-200 mt-1">Konsultasikan statistik kehadiran sekolah &amp; jadwal KBM berbasis data real-time.</p>
+                    <button onclick="toggleChatbot()" class="mt-4 px-3.5 py-1.5 bg-white text-purple-900 hover:bg-purple-50 text-xs font-bold rounded-xl shadow transition flex items-center gap-2">
+                      <i class="fa-solid fa-comments"></i> Buka AI Widget
+                    </button>
+                  </div>
+                  <i class="fa-solid fa-brain text-8xl text-white/10 absolute -right-4 -bottom-4"></i>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
+                  <h4 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Aksi Cepat Sistem</h4>
+                  <div class="space-y-2">
+                    <button onclick="goToScreen('screen-scan')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-between border border-slate-100 transition">
+                      <span class="flex items-center gap-2"><i class="fa-solid fa-barcode text-sky-600"></i> Scan Kartu QR Sekarang</span>
+                      <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                    </button>
+                    <button onclick="goToScreen('screen-siswa')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-between border border-slate-100 transition">
+                      <span class="flex items-center gap-2"><i class="fa-solid fa-print text-emerald-600"></i> Cetak Kartu Pelajar Barcode</span>
+                      <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- SCREEN 3: UNIVERSAL QR SCANNER INTERACTIVE SIMULATION               -->
+      <!-- =================================================================== -->
+      <div id="screen-scan" class="screen-view hidden flex flex-col min-h-[760px] bg-slate-900 text-white">
+        <!-- Top bar scanner -->
+        <header class="h-16 bg-slate-950 border-b border-slate-800 px-8 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button onclick="goToScreen('screen-dashboard')" class="text-slate-400 hover:text-white text-xs font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800">
+              <i class="fa-solid fa-arrow-left"></i> Kembali
+            </button>
+            <h2 class="text-sm font-extrabold text-white">Universal QR / Barcode Scanner (Webcam Stream)</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Kamera Siaga
+            </span>
+          </div>
+        </header>
+
+        <!-- Scanner Viewport Container -->
+        <div class="flex-1 flex flex-col items-center justify-center p-8">
+          <div class="w-full max-w-xl bg-slate-950 rounded-3xl border border-slate-800 p-6 shadow-2xl relative">
+            
+            <!-- Target Selection Mode -->
+            <div class="flex justify-center mb-5">
+              <div class="bg-slate-900 p-1 rounded-xl flex border border-slate-800">
+                <button onclick="setScanMode('siswa')" id="btn-scan-siswa" class="px-5 py-2 text-xs font-bold rounded-lg bg-sky-600 text-white shadow transition">
+                  <i class="fa-solid fa-graduation-cap mr-1"></i> Scan Siswa
+                </button>
+                <button onclick="setScanMode('guru')" id="btn-scan-guru" class="px-5 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition">
+                  <i class="fa-solid fa-chalkboard-user mr-1"></i> Scan Guru (Cooldown 10m)
+                </button>
+              </div>
+            </div>
+
+            <!-- Kamera viewfinder simulation box -->
+            <div class="relative w-full h-80 bg-slate-900 rounded-2xl border-2 border-dashed border-slate-700 overflow-hidden flex flex-col items-center justify-center">
+              
+              <!-- Red Laser scanning line -->
+              <div class="laser-line absolute left-0 right-0 h-0.5 bg-red-500 shadow-[0_0_12px_3px_rgba(239,68,68,0.8)] z-10"></div>
+
+              <!-- Corner brackets -->
+              <div class="absolute top-4 left-4 w-8 h-8 border-t-4 border-l-4 border-sky-400 rounded-tl-lg"></div>
+              <div class="absolute top-4 right-4 w-8 h-8 border-t-4 border-r-4 border-sky-400 rounded-tr-lg"></div>
+              <div class="absolute bottom-4 left-4 w-8 h-8 border-b-4 border-l-4 border-sky-400 rounded-bl-lg"></div>
+              <div class="absolute bottom-4 right-4 w-8 h-8 border-b-4 border-r-4 border-sky-400 rounded-br-lg"></div>
+
+              <!-- Target QR Simulation Card Inside Viewfinder -->
+              <div class="bg-white p-4 rounded-xl shadow-lg text-slate-800 text-center z-0 animate-pulse">
+                <i class="fa-solid fa-qrcode text-6xl text-slate-900"></i>
+                <p class="text-[10px] font-mono font-bold mt-1 text-slate-600">BC-SISWA-001</p>
+                <p class="text-[9px] text-slate-400 font-semibold">Andi Pratama (X RPL 1)</p>
+              </div>
+
+              <!-- Viewport instruction overlay -->
+              <div class="absolute bottom-3 bg-black/60 px-4 py-1 rounded-full text-[11px] text-slate-300 backdrop-blur-sm">
+                Arahkan kartu QR ke dalam bingkai kamera
+              </div>
+            </div>
+
+            <!-- Trigger Button: Simulasikan Scan Sukses -->
+            <div class="mt-6 text-center space-y-2">
+              <button onclick="triggerSimulatedScan()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2 mx-auto">
+                <i class="fa-solid fa-barcode"></i> Simulasikan Scan Barcode (Hadir Tepat Waktu)
+              </button>
+              <p class="text-[11px] text-slate-400">Menyimulasikan request POST ke AbsensiController &amp; WhatsApp Gateway Fonnte</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SCAN SUCCESS MODAL POPUP -->
+        <div id="modal-scan-success" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl text-slate-800 text-center transform transition-all scale-100">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4 font-bold shadow-inner">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full uppercase tracking-wider">
+              Presensi Berhasil
+            </span>
+            <h3 class="text-xl font-black mt-2 text-slate-900">Andi Pratama</h3>
+            <p class="text-xs text-slate-500 font-semibold">NIS: 20231001 • Kelas X RPL 1</p>
+
+            <div class="bg-slate-50 rounded-2xl p-4 my-4 text-left border border-slate-100 text-xs space-y-2">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Status Kehadiran:</span>
+                <span class="font-extrabold text-emerald-600">Hadir (06:48:12 WIB)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Aturan Cutoff:</span>
+                <span class="font-bold text-slate-700">Tepat Waktu (&lt;= 07:00:00 WIB)</span>
+              </div>
+              <div class="flex justify-between items-center pt-2 border-t border-slate-200">
+                <span class="text-slate-400">Notifikasi WA Ortu:</span>
+                <span class="text-emerald-600 font-bold flex items-center gap-1">
+                  <i class="fa-brands fa-whatsapp text-sm"></i> Terkirim ke 0812-3456-7890
+                </span>
+              </div>
+            </div>
+
+            <!-- WhatsApp Message Preview Mockup -->
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-left mb-4 text-[11px] text-emerald-950 font-sans leading-relaxed">
+              <div class="font-bold text-emerald-800 flex items-center gap-1.5 mb-1">
+                <i class="fa-solid fa-school text-xs"></i> SMK NU WARGABINANGUN (Pemberitahuan Presensi)
+              </div>
+              Yth. Bpk/Ibu Orang Tua dari <b>Andi Pratama</b>,<br>
+              Putra/i Anda telah melakukan presensi pada <b>15 Nov 2026 pukul 06:48 WIB</b> dengan status <b>HADIR TEPAT WAKTU</b>. Terima kasih.
+            </div>
+
+            <button onclick="closeModalScan()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold rounded-xl transition">
+              Tutup &amp; Siapkan Scan Berikutnya
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- SCREEN 4: KELOLA DATA SISWA & CETAK KARTU BARCODE                   -->
+      <!-- =================================================================== -->
+      <div id="screen-siswa" class="screen-view hidden flex flex-col min-h-[760px] bg-slate-50">
+        <!-- Top bar -->
+        <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button onclick="goToScreen('screen-dashboard')" class="text-slate-500 hover:text-slate-800 text-xs font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100">
+              <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </button>
+            <h2 class="text-base font-extrabold text-slate-800">Master Data Siswa &amp; Kartu Barcode</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="previewIDCard('Andi Pratama', '20231001', 'X RPL 1', 'BC-SISWA-001')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-2">
+              <i class="fa-solid fa-id-badge"></i> Preview Kartu Pelajar
+            </button>
+          </div>
+        </header>
+
+        <!-- Data table -->
+        <div class="p-8">
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+            <div class="flex justify-between items-center mb-5">
+              <div class="flex items-center gap-3">
+                <input type="text" placeholder="Cari nama, NIS, atau barcode..." class="px-3.5 py-2 text-xs border border-slate-200 rounded-xl w-64 bg-slate-50">
+                <select class="px-3 py-2 text-xs border border-slate-200 rounded-xl bg-slate-50 font-semibold text-slate-700">
+                  <option>Semua Kelas</option>
+                  <option>X RPL 1</option>
+                  <option>X RPL 2</option>
+                </select>
+              </div>
+              <span class="text-xs text-slate-500 font-semibold">Menampilkan 3 data siswa</span>
+            </div>
+
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="border-b border-slate-200 text-slate-400 font-bold uppercase text-[10px]">
+                  <th class="py-3 px-3">NIS</th>
+                  <th class="py-3 px-3">Nama Lengkap</th>
+                  <th class="py-3 px-3">Kelas</th>
+                  <th class="py-3 px-3">Barcode ID</th>
+                  <th class="py-3 px-3">Nama Wali &amp; No WA</th>
+                  <th class="py-3 px-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr>
+                  <td class="py-3.5 px-3 font-mono font-bold text-slate-700">20231001</td>
+                  <td class="py-3.5 px-3 font-extrabold text-slate-800">Andi Pratama</td>
+                  <td class="py-3.5 px-3 text-slate-600 font-semibold">X RPL 1</td>
+                  <td class="py-3.5 px-3">
+                    <span class="px-2 py-0.5 rounded font-mono font-bold text-[10px] bg-sky-100 text-sky-800 border border-sky-200">
+                      BC-SISWA-001
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-3 text-slate-600">Bpk. Slamet (081234567890)</td>
+                  <td class="py-3.5 px-3 text-right space-x-1.5">
+                    <button onclick="previewIDCard('Andi Pratama', '20231001', 'X RPL 1', 'BC-SISWA-001')" class="px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg font-bold text-[11px]">
+                      <i class="fa-solid fa-id-card mr-1"></i> Kartu
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-3.5 px-3 font-mono font-bold text-slate-700">20231002</td>
+                  <td class="py-3.5 px-3 font-extrabold text-slate-800">Bunga Citra</td>
+                  <td class="py-3.5 px-3 text-slate-600 font-semibold">X RPL 1</td>
+                  <td class="py-3.5 px-3">
+                    <span class="px-2 py-0.5 rounded font-mono font-bold text-[10px] bg-sky-100 text-sky-800 border border-sky-200">
+                      BC-SISWA-002
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-3 text-slate-600">Ibu Ratna (081234567891)</td>
+                  <td class="py-3.5 px-3 text-right space-x-1.5">
+                    <button onclick="previewIDCard('Bunga Citra', '20231002', 'X RPL 1', 'BC-SISWA-002')" class="px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg font-bold text-[11px]">
+                      <i class="fa-solid fa-id-card mr-1"></i> Kartu
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-3.5 px-3 font-mono font-bold text-slate-700">20231003</td>
+                  <td class="py-3.5 px-3 font-extrabold text-slate-800">Cahyo Purnomo</td>
+                  <td class="py-3.5 px-3 text-slate-600 font-semibold">X RPL 2</td>
+                  <td class="py-3.5 px-3">
+                    <span class="px-2 py-0.5 rounded font-mono font-bold text-[10px] bg-sky-100 text-sky-800 border border-sky-200">
+                      BC-SISWA-003
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-3 text-slate-600">Bpk. Joko (081234567892)</td>
+                  <td class="py-3.5 px-3 text-right space-x-1.5">
+                    <button onclick="previewIDCard('Cahyo Purnomo', '20231003', 'X RPL 2', 'BC-SISWA-003')" class="px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg font-bold text-[11px]">
+                      <i class="fa-solid fa-id-card mr-1"></i> Kartu
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ID CARD PREVIEW MODAL -->
+        <div id="modal-idcard" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-slate-800 text-center">
+            
+            <!-- Physical ID Card Simulation -->
+            <div class="w-full bg-gradient-to-tr from-sky-700 via-sky-600 to-indigo-800 text-white rounded-2xl p-5 shadow-xl text-left relative overflow-hidden border border-white/20">
+              <!-- Top school header -->
+              <div class="flex items-center gap-2.5 pb-3 border-b border-white/20 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-white text-sky-700 font-black flex items-center justify-center text-xs">
+                  NU
+                </div>
+                <div>
+                  <h4 class="text-xs font-black tracking-tight leading-tight">SMK NU WARGABINANGUN</h4>
+                  <p class="text-[9px] text-sky-200 font-medium tracking-wider uppercase">KARTU TANDA PELAJAR</p>
+                </div>
+              </div>
+
+              <!-- Student photo & bio -->
+              <div class="flex gap-3 items-center mb-4">
+                <div class="w-16 h-20 rounded-lg bg-slate-200 border-2 border-white flex items-center justify-center text-slate-400 shadow">
+                  <i class="fa-solid fa-user text-2xl"></i>
+                </div>
+                <div>
+                  <h3 id="card-nama" class="text-sm font-extrabold text-white">Andi Pratama</h3>
+                  <p id="card-nis" class="text-[10px] text-sky-200 font-mono">NIS: 20231001</p>
+                  <p id="card-kelas" class="text-[10px] text-sky-100 font-semibold mt-0.5">Kelas: X RPL 1</p>
+                </div>
+              </div>
+
+              <!-- Barcode & QR Code box -->
+              <div class="bg-white text-slate-900 rounded-xl p-2.5 flex items-center justify-between shadow-inner">
+                <div>
+                  <i class="fa-solid fa-barcode text-3xl tracking-widest text-slate-800"></i>
+                  <p id="card-code" class="text-[9px] font-mono font-bold text-slate-700">BC-SISWA-001</p>
+                </div>
+                <i class="fa-solid fa-qrcode text-3xl text-slate-800"></i>
+              </div>
+            </div>
+
+            <div class="mt-4 flex gap-2">
+              <button onclick="closeModalIDCard()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                Tutup
+              </button>
+              <button onclick="alert('Simulasi Cetak: Format PDF Siap Dicetak!'); closeModalIDCard();" class="flex-1 py-2 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow transition">
+                <i class="fa-solid fa-print mr-1"></i> Cetak Kartu
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- FLOATING AI CHATBOT WIDGET (LIVE DB CONTEXT RAG SIMULATION)         -->
+      <!-- =================================================================== -->
+      <div id="chatbot-container" class="absolute bottom-6 right-6 z-40">
+        
+        <!-- Chatbot Floating Button -->
+        <button onclick="toggleChatbot()" id="btn-chat-toggle" class="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-xl flex items-center justify-center text-xl hover:scale-105 active:scale-95 transition">
+          <i class="fa-solid fa-robot"></i>
+        </button>
+
+        <!-- Chat Window Box -->
+        <div id="chat-window" class="hidden absolute bottom-16 right-0 w-84 w-[360px] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col">
+          <!-- Chat header -->
+          <div class="bg-gradient-to-r from-purple-700 to-indigo-800 text-white p-4 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">
+                🤖
+              </div>
+              <div>
+                <h4 class="text-xs font-extrabold">Asisten AI SMK NU</h4>
+                <p class="text-[10px] text-purple-200 font-medium">Injeksi Live Database (RAG Aktif)</p>
+              </div>
+            </div>
+            <button onclick="toggleChatbot()" class="text-white/80 hover:text-white text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Chat body / messages -->
+          <div id="chat-messages" class="p-4 h-72 overflow-y-auto space-y-3 bg-slate-50 text-xs">
+            <!-- Greeting message -->
+            <div class="flex items-start gap-2">
+              <div class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-bold">AI</div>
+              <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200/80 text-slate-700 shadow-sm leading-relaxed">
+                Halo! Saya asisten pintar SMK NU WARGABINANGUN. Ada yang bisa saya bantu terkait statistik kehadiran atau jadwal KBM hari ini?
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Prompts Buttons -->
+          <div class="px-3 py-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[10px]">
+            <button onclick="sendQuickPrompt('Berapa kali kehadiran saya bulan ini?')" class="px-2.5 py-1 bg-white hover:bg-purple-50 text-purple-700 font-bold rounded-lg border border-purple-200 whitespace-nowrap shadow-sm">
+              ❓ Kehadiran Saya
+            </button>
+            <button onclick="sendQuickPrompt('Apa jadwal pelajaran hari ini?')" class="px-2.5 py-1 bg-white hover:bg-purple-50 text-purple-700 font-bold rounded-lg border border-purple-200 whitespace-nowrap shadow-sm">
+              📅 Jadwal Hari Ini
+            </button>
+          </div>
+
+          <!-- Chat input form -->
+          <form onsubmit="handleChatSubmit(event)" class="p-2.5 bg-white border-t border-slate-200 flex items-center gap-2">
+            <input id="chat-input" type="text" placeholder="Tulis pertanyaan Anda..." class="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-purple-600 text-slate-700 font-medium">
+            <button type="submit" class="w-8 h-8 rounded-xl bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center text-xs shadow transition">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT PROTOTYPE CONTROLLER                                           -->
+  <!-- ========================================================================= -->
+  <script>
+    let currentScreen = 'screen-dashboard';
+    let showHotspots = true;
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen-view').forEach(s => s.classList.add('hidden'));
+      const target = document.getElementById(screenId);
+      if(target) {
+        target.classList.remove('hidden');
+        currentScreen = screenId;
+      }
+
+      // Update Top Nav Tabs styling
+      const tabs = ['login', 'dashboard', 'scan', 'siswa'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`btn-tab-${t}`);
+        if(btn) {
+          if(`screen-${t}` === screenId) {
+            btn.className = "px-3 py-1.5 rounded-md text-xs font-semibold bg-sky-600 text-white shadow transition flex items-center gap-1.5";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-md text-xs font-semibold text-zinc-300 hover:text-white transition flex items-center gap-1.5";
+          }
+        }
+      });
+    }
+
+    function selectLoginRole(role) {
+      const roles = ['admin', 'guru', 'siswa'];
+      roles.forEach(r => {
+        const btn = document.getElementById(`role-${r}`);
+        if(r === role) {
+          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-lg bg-white text-sky-600 shadow-sm transition";
+        } else {
+          btn.className = "flex-1 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-700 transition";
+        }
+      });
+      document.getElementById('input-username').value = role === 'admin' ? 'admin' : (role === 'guru' ? '19800101' : '20231001');
+    }
+
+    function toggleHotspots() {
+      showHotspots = !showHotspots;
+      document.getElementById('hotspot-text').innerText = showHotspots ? 'Petunjuk Klik (ON)' : 'Petunjuk Klik (OFF)';
+      document.getElementById('btn-hotspot').classList.toggle('text-sky-400', showHotspots);
+    }
+
+    function handleCanvasClick(e) {
+      if(!showHotspots) return;
+      // If clicking non-interactive area, highlight clickable elements briefly
+      if(!e.target.closest('button, a, input, select')) {
+        const interactiveBtns = document.querySelectorAll(`#${currentScreen} button, #${currentScreen} a`);
+        interactiveBtns.forEach(btn => {
+          btn.classList.add('hotspot-active');
+          setTimeout(() => btn.classList.remove('hotspot-active'), 800);
+        });
+      }
+    }
+
+    function setScanMode(mode) {
+      const btnSiswa = document.getElementById('btn-scan-siswa');
+      const btnGuru = document.getElementById('btn-scan-guru');
+      if(mode === 'siswa') {
+        btnSiswa.className = "px-5 py-2 text-xs font-bold rounded-lg bg-sky-600 text-white shadow transition";
+        btnGuru.className = "px-5 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition";
+      } else {
+        btnGuru.className = "px-5 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow transition";
+        btnSiswa.className = "px-5 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition";
+      }
+    }
+
+    function triggerSimulatedScan() {
+      document.getElementById('modal-scan-success').classList.remove('hidden');
+    }
+
+    function closeModalScan() {
+      document.getElementById('modal-scan-success').classList.add('hidden');
+    }
+
+    function previewIDCard(nama, nis, kelas, barcode) {
+      document.getElementById('card-nama').innerText = nama;
+      document.getElementById('card-nis').innerText = `NIS: ${nis}`;
+      document.getElementById('card-kelas').innerText = `Kelas: ${kelas}`;
+      document.getElementById('card-code').innerText = barcode;
+      document.getElementById('modal-idcard').classList.remove('hidden');
+    }
+
+    function closeModalIDCard() {
+      document.getElementById('modal-idcard').classList.add('hidden');
+    }
+
+    function toggleChatbot() {
+      const chatWin = document.getElementById('chat-window');
+      chatWin.classList.toggle('hidden');
+    }
+
+    function sendQuickPrompt(text) {
+      document.getElementById('chat-input').value = text;
+      handleChatSubmit(new Event('submit'));
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const query = input.value.trim();
+      if(!query) return;
+
+      const chatBox = document.getElementById('chat-messages');
+      // Append user bubble
+      chatBox.innerHTML += `
+        <div class="flex items-start justify-end gap-2">
+          <div class="bg-purple-600 text-white p-3 rounded-2xl rounded-tr-none shadow-sm leading-relaxed max-w-[85%]">
+            ${query}
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-700 text-white flex items-center justify-center text-[10px] font-bold">U</div>
+        </div>
+      `;
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Simulated RAG AI Typing Response
+      setTimeout(() => {
+        let reply = "Saya telah memeriksa basis data MariaDB Anda.";
+        if(query.toLowerCase().includes("kehadiran")) {
+          reply = "📊 <b>Statistik Kehadiran Anda (Bulan Ini):</b><br>• Hadir: <b>18 kali</b><br>• Terlambat: <b>2 kali</b><br>• Izin: <b>1 kali</b><br>Persentase kehadiran Anda adalah <b>94.7%</b> (Sangat Baik).";
+        } else if(query.toLowerCase().includes("jadwal")) {
+          reply = "📅 <b>Jadwal KBM Hari Ini (Senin):</b><br>1. 07.00 - 08.30: <b>Pemrograman Web</b> (Pak Budi Santoso, S.Pd)<br>2. 08.30 - 10.00: <b>Basis Data Relasional</b> (Pak Ahmad Dahlan, S.Kom)";
+        } else {
+          reply = `Jawaban berdasarkan data real-time: Pertanyaan Anda mengenai "<b>${query}</b>" telah tercatat di sistem absensi SMK NU WARGABINANGUN.`;
+        }
+
+        chatBox.innerHTML += `
+          <div class="flex items-start gap-2">
+            <div class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] font-bold">AI</div>
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200/80 text-slate-700 shadow-sm leading-relaxed max-w-[85%]">
+              ${reply}
+            </div>
+          </div>
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+    }
+
+    function restartPrototype() {
+      goToScreen('screen-login');
+      document.getElementById('chat-window').classList.add('hidden');
+      closeModalScan();
+      closeModalIDCard();
+    }
+  </script>
+</body>
+</html>

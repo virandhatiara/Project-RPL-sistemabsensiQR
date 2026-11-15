@@ -1,0 +1,872 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1860 1250" width="1860" height="1250" style="background-color: #F8FAFC;">
+    
+    <defs>
+      <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.08" flood-color="#0f172a" />
+      </filter>
+    </defs>
+    <rect width="1860" height="1250" fill="#F8FAFC" />
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.6"/>
+    </pattern>
+    <rect width="100%" height="100%" fill="url(#grid)" />
+    
+    <g id="header">
+      <rect x="0" y="0" width="1860" height="96" fill="#0F172A" />
+      <rect x="0" y="93" width="1860" height="3" fill="#0284C7" />
+      <text x="930.0" y="42" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="22" font-weight="800" fill="#FFFFFF" letter-spacing="-0.3">
+        ENTITY RELATIONSHIP DIAGRAM (ERD) — SISTEM ABSENSI SMK NU WARGABINANGUN
+      </text>
+      <text x="930.0" y="69" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#38BDF8">
+        Basis Data Relasional MariaDB InnoDB • 8 Entitas Utama • Notasi Crow's Foot &amp; Kardinalitas Relasi PK-FK
+      </text>
+    </g>
+    
+        <g id="entity_users" filter="url(#card-shadow)">
+          <rect x="50" y="140" width="400" height="242" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 50 148 Q 50 140 58 140 L 442 140 Q 450 140 450 148 L 450 182 L 50 182 Z" fill="#0284C7" />
+          
+          <text x="64" y="160" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            USERS
+          </text>
+          <text x="64" y="174" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Tabel Akun Pengguna &amp; Hak Akses
+          </text>
+        <rect x="51" y="182" width="398" height="24" fill="#FFFFFF" />
+                <rect x="58" y="186" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="70.5" y="197" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="88" y="198" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="438" y="198" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="51" y="206" width="398" height="24" fill="#F8FAFC" />
+                <rect x="58" y="210" width="25" height="15" rx="3" fill="#10B981" />
+                <text x="70.5" y="221" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">UQ</text>
+                
+            <text x="88" y="222" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              username
+            </text>
+            
+            <text x="438" y="222" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(50) UNIQUE
+            </text>
+            <rect x="51" y="230" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="70.5" cy="242" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="246" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nama
+            </text>
+            
+            <text x="438" y="246" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(100) NULL
+            </text>
+            <rect x="51" y="254" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="70.5" cy="266" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="270" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              password
+            </text>
+            
+            <text x="438" y="270" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(255)
+            </text>
+            <rect x="51" y="278" width="398" height="24" fill="#FFFFFF" />
+                <rect x="58" y="282" width="25" height="15" rx="3" fill="#64748B" />
+                <text x="70.5" y="293" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">IDX</text>
+                
+            <text x="88" y="294" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              role
+            </text>
+            
+            <text x="438" y="294" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              ENUM('admin','guru','...')
+            </text>
+            <rect x="51" y="302" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="70.5" cy="314" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="318" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              is_active
+            </text>
+            
+            <text x="438" y="318" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TINYINT(1) DEFAULT 1
+            </text>
+            <rect x="51" y="326" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="70.5" cy="338" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="342" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              created_at
+            </text>
+            
+            <text x="438" y="342" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            <rect x="51" y="350" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="70.5" cy="362" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="366" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              updated_at
+            </text>
+            
+            <text x="438" y="366" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            </g>
+        <g id="entity_chat_history" filter="url(#card-shadow)">
+          <rect x="50" y="570" width="400" height="170" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 50 578 Q 50 570 58 570 L 442 570 Q 450 570 450 578 L 450 612 L 50 612 Z" fill="#9333EA" />
+          
+          <text x="64" y="590" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            CHAT_HISTORY
+          </text>
+          <text x="64" y="604" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Riwayat Tanya-Jawab AI Chatbot (RAG)
+          </text>
+        <rect x="51" y="612" width="398" height="24" fill="#FFFFFF" />
+                <rect x="58" y="616" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="70.5" y="627" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="88" y="628" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="438" y="628" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="51" y="636" width="398" height="24" fill="#F8FAFC" />
+                <rect x="58" y="640" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="70.5" y="651" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="88" y="652" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              user_id
+            </text>
+            
+            <text x="438" y="652" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11)
+            </text>
+            <rect x="51" y="660" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="70.5" cy="672" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="676" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              pertanyaan
+            </text>
+            
+            <text x="438" y="676" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TEXT
+            </text>
+            <rect x="51" y="684" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="70.5" cy="696" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="700" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              jawaban
+            </text>
+            
+            <text x="438" y="700" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TEXT
+            </text>
+            <rect x="51" y="708" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="70.5" cy="720" r="2" fill="#94A3B8" />
+                
+            <text x="88" y="724" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              created_at
+            </text>
+            
+            <text x="438" y="724" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            </g>
+        <g id="entity_guru" filter="url(#card-shadow)">
+          <rect x="510" y="140" width="400" height="242" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 510 148 Q 510 140 518 140 L 902 140 Q 910 140 910 148 L 910 182 L 510 182 Z" fill="#0D9488" />
+          
+          <text x="524" y="160" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            GURU
+          </text>
+          <text x="524" y="174" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Master Data Dewan Guru &amp; Pegawai
+          </text>
+        <rect x="511" y="182" width="398" height="24" fill="#FFFFFF" />
+                <rect x="518" y="186" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="530.5" y="197" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="548" y="198" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="898" y="198" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="511" y="206" width="398" height="24" fill="#F8FAFC" />
+                <rect x="518" y="210" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="530.5" y="221" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="548" y="222" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              user_id
+            </text>
+            
+            <text x="898" y="222" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) NULL
+            </text>
+            <rect x="511" y="230" width="398" height="24" fill="#FFFFFF" />
+                <rect x="518" y="234" width="25" height="15" rx="3" fill="#10B981" />
+                <text x="530.5" y="245" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">UQ</text>
+                
+            <text x="548" y="246" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nip
+            </text>
+            
+            <text x="898" y="246" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(20) UNIQUE
+            </text>
+            <rect x="511" y="254" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="530.5" cy="266" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="270" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nama
+            </text>
+            
+            <text x="898" y="270" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(100)
+            </text>
+            <rect x="511" y="278" width="398" height="24" fill="#FFFFFF" />
+                <rect x="518" y="282" width="25" height="15" rx="3" fill="#10B981" />
+                <text x="530.5" y="293" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">UQ</text>
+                
+            <text x="548" y="294" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              barcode_id
+            </text>
+            
+            <text x="898" y="294" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(50) UNIQUE
+            </text>
+            <rect x="511" y="302" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="530.5" cy="314" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="318" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              no_wa
+            </text>
+            
+            <text x="898" y="318" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(20) NULL
+            </text>
+            <rect x="511" y="326" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="530.5" cy="338" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="342" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              no_hp
+            </text>
+            
+            <text x="898" y="342" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(20) NULL
+            </text>
+            <rect x="511" y="350" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="530.5" cy="362" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="366" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              created_at
+            </text>
+            
+            <text x="898" y="366" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            </g>
+        <g id="entity_absensi_guru" filter="url(#card-shadow)">
+          <rect x="510" y="570" width="400" height="218" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 510 578 Q 510 570 518 570 L 902 570 Q 910 570 910 578 L 910 612 L 510 612 Z" fill="#059669" />
+          
+          <text x="524" y="590" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            ABSENSI_GURU
+          </text>
+          <text x="524" y="604" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Transaksi Presensi Harian Guru
+          </text>
+        <rect x="511" y="612" width="398" height="24" fill="#FFFFFF" />
+                <rect x="518" y="616" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="530.5" y="627" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="548" y="628" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="898" y="628" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="511" y="636" width="398" height="24" fill="#F8FAFC" />
+                <rect x="518" y="640" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="530.5" y="651" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="548" y="652" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              guru_id
+            </text>
+            
+            <text x="898" y="652" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11)
+            </text>
+            <rect x="511" y="660" width="398" height="24" fill="#FFFFFF" />
+                <rect x="518" y="664" width="25" height="15" rx="3" fill="#64748B" />
+                <text x="530.5" y="675" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">IDX</text>
+                
+            <text x="548" y="676" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              tanggal
+            </text>
+            
+            <text x="898" y="676" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              DATE
+            </text>
+            <rect x="511" y="684" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="530.5" cy="696" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="700" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              jam_masuk
+            </text>
+            
+            <text x="898" y="700" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIME
+            </text>
+            <rect x="511" y="708" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="530.5" cy="720" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="724" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              jam_pulang
+            </text>
+            
+            <text x="898" y="724" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIME NULL
+            </text>
+            <rect x="511" y="732" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="530.5" cy="744" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="748" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              status
+            </text>
+            
+            <text x="898" y="748" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              ENUM('hadir','terlambat',...)
+            </text>
+            <rect x="511" y="756" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="530.5" cy="768" r="2" fill="#94A3B8" />
+                
+            <text x="548" y="772" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              created_at
+            </text>
+            
+            <text x="898" y="772" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            </g>
+        <g id="entity_kelas" filter="url(#card-shadow)">
+          <rect x="965" y="140" width="390" height="146" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 965 148 Q 965 140 973 140 L 1347 140 Q 1355 140 1355 148 L 1355 182 L 965 182 Z" fill="#D97706" />
+          
+          <text x="979" y="160" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            KELAS
+          </text>
+          <text x="979" y="174" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Master Data Rombongan Belajar (Rombel)
+          </text>
+        <rect x="966" y="182" width="388" height="24" fill="#FFFFFF" />
+                <rect x="973" y="186" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="985.5" y="197" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="1003" y="198" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="1343" y="198" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="966" y="206" width="388" height="24" fill="#F8FAFC" />
+                <rect x="973" y="210" width="25" height="15" rx="3" fill="#10B981" />
+                <text x="985.5" y="221" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">UQ</text>
+                
+            <text x="1003" y="222" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nama_kelas
+            </text>
+            
+            <text x="1343" y="222" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(50) UNIQUE
+            </text>
+            <rect x="966" y="230" width="388" height="24" fill="#FFFFFF" />
+                <rect x="973" y="234" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="985.5" y="245" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="1003" y="246" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              wali_kelas_id
+            </text>
+            
+            <text x="1343" y="246" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) NULL
+            </text>
+            <rect x="966" y="254" width="388" height="24" fill="#F8FAFC" />
+                <circle cx="985.5" cy="266" r="2" fill="#94A3B8" />
+                
+            <text x="1003" y="270" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              created_at
+            </text>
+            
+            <text x="1343" y="270" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            </g>
+        <g id="entity_jadwal" filter="url(#card-shadow)">
+          <rect x="965" y="450" width="390" height="218" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 965 458 Q 965 450 973 450 L 1347 450 Q 1355 450 1355 458 L 1355 492 L 965 492 Z" fill="#B45309" />
+          
+          <text x="979" y="470" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            JADWAL
+          </text>
+          <text x="979" y="484" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Jadwal Pelajaran Mengajar Mingguan
+          </text>
+        <rect x="966" y="492" width="388" height="24" fill="#FFFFFF" />
+                <rect x="973" y="496" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="985.5" y="507" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="1003" y="508" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="1343" y="508" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="966" y="516" width="388" height="24" fill="#F8FAFC" />
+                <rect x="973" y="520" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="985.5" y="531" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="1003" y="532" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              kelas_id
+            </text>
+            
+            <text x="1343" y="532" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11)
+            </text>
+            <rect x="966" y="540" width="388" height="24" fill="#FFFFFF" />
+                <rect x="973" y="544" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="985.5" y="555" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="1003" y="556" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              guru_id
+            </text>
+            
+            <text x="1343" y="556" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11)
+            </text>
+            <rect x="966" y="564" width="388" height="24" fill="#F8FAFC" />
+                <circle cx="985.5" cy="576" r="2" fill="#94A3B8" />
+                
+            <text x="1003" y="580" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              mata_pelajaran
+            </text>
+            
+            <text x="1343" y="580" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(100)
+            </text>
+            <rect x="966" y="588" width="388" height="24" fill="#FFFFFF" />
+                <rect x="973" y="592" width="25" height="15" rx="3" fill="#64748B" />
+                <text x="985.5" y="603" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">IDX</text>
+                
+            <text x="1003" y="604" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              hari
+            </text>
+            
+            <text x="1343" y="604" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              ENUM('Senin','Selasa',...)
+            </text>
+            <rect x="966" y="612" width="388" height="24" fill="#F8FAFC" />
+                <circle cx="985.5" cy="624" r="2" fill="#94A3B8" />
+                
+            <text x="1003" y="628" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              jam_mulai
+            </text>
+            
+            <text x="1343" y="628" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIME
+            </text>
+            <rect x="966" y="636" width="388" height="24" fill="#FFFFFF" />
+                <circle cx="985.5" cy="648" r="2" fill="#94A3B8" />
+                
+            <text x="1003" y="652" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              jam_selesai
+            </text>
+            
+            <text x="1343" y="652" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIME
+            </text>
+            </g>
+        <g id="entity_siswa" filter="url(#card-shadow)">
+          <rect x="1410" y="140" width="400" height="266" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 1410 148 Q 1410 140 1418 140 L 1802 140 Q 1810 140 1810 148 L 1810 182 L 1410 182 Z" fill="#2563EB" />
+          
+          <text x="1424" y="160" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            SISWA
+          </text>
+          <text x="1424" y="174" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Master Data Siswa / Peserta Didik
+          </text>
+        <rect x="1411" y="182" width="398" height="24" fill="#FFFFFF" />
+                <rect x="1418" y="186" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="1430.5" y="197" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="1448" y="198" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="1798" y="198" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="1411" y="206" width="398" height="24" fill="#F8FAFC" />
+                <rect x="1418" y="210" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="1430.5" y="221" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="1448" y="222" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              user_id
+            </text>
+            
+            <text x="1798" y="222" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) NULL
+            </text>
+            <rect x="1411" y="230" width="398" height="24" fill="#FFFFFF" />
+                <rect x="1418" y="234" width="25" height="15" rx="3" fill="#10B981" />
+                <text x="1430.5" y="245" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">UQ</text>
+                
+            <text x="1448" y="246" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nis
+            </text>
+            
+            <text x="1798" y="246" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(20) UNIQUE
+            </text>
+            <rect x="1411" y="254" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="1430.5" cy="266" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="270" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nama
+            </text>
+            
+            <text x="1798" y="270" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(100)
+            </text>
+            <rect x="1411" y="278" width="398" height="24" fill="#FFFFFF" />
+                <rect x="1418" y="282" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="1430.5" y="293" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="1448" y="294" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              kelas_id
+            </text>
+            
+            <text x="1798" y="294" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) NULL
+            </text>
+            <rect x="1411" y="302" width="398" height="24" fill="#F8FAFC" />
+                <rect x="1418" y="306" width="25" height="15" rx="3" fill="#10B981" />
+                <text x="1430.5" y="317" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">UQ</text>
+                
+            <text x="1448" y="318" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              barcode_id
+            </text>
+            
+            <text x="1798" y="318" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(50) UNIQUE
+            </text>
+            <rect x="1411" y="326" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="1430.5" cy="338" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="342" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              no_wa
+            </text>
+            
+            <text x="1798" y="342" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(20) NULL
+            </text>
+            <rect x="1411" y="350" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="1430.5" cy="362" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="366" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              nama_ortu
+            </text>
+            
+            <text x="1798" y="366" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(100) NULL
+            </text>
+            <rect x="1411" y="374" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="1430.5" cy="386" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="390" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              no_hp_ortu
+            </text>
+            
+            <text x="1798" y="390" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              VARCHAR(20) NULL
+            </text>
+            </g>
+        <g id="entity_absensi_siswa" filter="url(#card-shadow)">
+          <rect x="1410" y="580" width="400" height="194" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" />
+          
+          <path d="M 1410 588 Q 1410 580 1418 580 L 1802 580 Q 1810 580 1810 588 L 1810 622 L 1410 622 Z" fill="#DC2626" />
+          
+          <text x="1424" y="600" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="800" fill="#FFFFFF">
+            ABSENSI_SISWA
+          </text>
+          <text x="1424" y="614" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#E2E8F0">
+            Transaksi Presensi Harian Siswa (QR)
+          </text>
+        <rect x="1411" y="622" width="398" height="24" fill="#FFFFFF" />
+                <rect x="1418" y="626" width="25" height="15" rx="3" fill="#0284C7" />
+                <text x="1430.5" y="637" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">PK</text>
+                
+            <text x="1448" y="638" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              id
+            </text>
+            
+            <text x="1798" y="638" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11) AUTO_INC
+            </text>
+            <rect x="1411" y="646" width="398" height="24" fill="#F8FAFC" />
+                <rect x="1418" y="650" width="25" height="15" rx="3" fill="#D97706" />
+                <text x="1430.5" y="661" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">FK</text>
+                
+            <text x="1448" y="662" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="700" fill="#0F172A">
+              siswa_id
+            </text>
+            
+            <text x="1798" y="662" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              INT(11)
+            </text>
+            <rect x="1411" y="670" width="398" height="24" fill="#FFFFFF" />
+                <rect x="1418" y="674" width="25" height="15" rx="3" fill="#64748B" />
+                <text x="1430.5" y="685" text-anchor="middle" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="800" fill="#FFFFFF">IDX</text>
+                
+            <text x="1448" y="686" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              tanggal
+            </text>
+            
+            <text x="1798" y="686" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              DATE
+            </text>
+            <rect x="1411" y="694" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="1430.5" cy="706" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="710" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              jam
+            </text>
+            
+            <text x="1798" y="710" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIME
+            </text>
+            <rect x="1411" y="718" width="398" height="24" fill="#FFFFFF" />
+                <circle cx="1430.5" cy="730" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="734" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              status
+            </text>
+            
+            <text x="1798" y="734" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              ENUM('hadir','sakit',...)
+            </text>
+            <rect x="1411" y="742" width="398" height="24" fill="#F8FAFC" />
+                <circle cx="1430.5" cy="754" r="2" fill="#94A3B8" />
+                
+            <text x="1448" y="758" font-family="'JetBrains Mono', monospace, Arial" font-size="9.2" font-weight="500" fill="#334155">
+              created_at
+            </text>
+            
+            <text x="1798" y="758" text-anchor="end" font-family="'JetBrains Mono', monospace, Arial" font-size="8.5" font-weight="500" fill="#64748B">
+              TIMESTAMP
+            </text>
+            </g>
+    <g class="relationship-line">
+      <path d="M 450 200 L 510 200" fill="none" stroke="#0284C7" stroke-width="2" />
+      <circle cx="462" cy="200" r="8" fill="#0F172A" />
+      <text x="462" y="203" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="498" cy="200" r="8" fill="#0284C7" />
+      <text x="498" y="203" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 250 390 L 250 570" fill="none" stroke="#9333EA" stroke-width="2" />
+      <rect x="195" y="465" width="110" height="20" rx="10" fill="#FFFFFF" stroke="#9333EA" stroke-width="1.2" filter="url(#card-shadow)" />
+      <text x="250" y="479" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#9333EA">
+        1 : N (Riwayat Chat)
+      </text>
+      <circle cx="250" cy="405" r="8" fill="#0F172A" />
+      <text x="250" y="408" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="250" cy="555" r="8" fill="#9333EA" />
+      <text x="250" y="558" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 910 200 L 965 200" fill="none" stroke="#D97706" stroke-width="2" />
+      <circle cx="922" cy="200" r="8" fill="#0F172A" />
+      <text x="922" y="203" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="953" cy="200" r="8" fill="#D97706" />
+      <text x="953" y="203" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 710 385 L 710 570" fill="none" stroke="#059669" stroke-width="2" />
+      <rect x="655" y="465" width="110" height="20" rx="10" fill="#FFFFFF" stroke="#059669" stroke-width="1.2" filter="url(#card-shadow)" />
+      <text x="710" y="479" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#059669">
+        1 : N (Absen Guru)
+      </text>
+      <circle cx="710" cy="400" r="8" fill="#0F172A" />
+      <text x="710" y="403" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="710" cy="555" r="8" fill="#059669" />
+      <text x="710" y="558" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 1355 200 L 1410 200" fill="none" stroke="#D97706" stroke-width="2" />
+      <circle cx="1367" cy="200" r="8" fill="#0F172A" />
+      <text x="1367" y="203" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="1398" cy="200" r="8" fill="#D97706" />
+      <text x="1398" y="203" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 1160 285 L 1160 450" fill="none" stroke="#B45309" stroke-width="2" />
+      <rect x="1100" y="355" width="120" height="20" rx="10" fill="#FFFFFF" stroke="#B45309" stroke-width="1.2" filter="url(#card-shadow)" />
+      <text x="1160" y="369" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#B45309">
+        1 : N (Jadwal Kelas)
+      </text>
+      <circle cx="1160" cy="300" r="8" fill="#0F172A" />
+      <text x="1160" y="303" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="1160" cy="435" r="8" fill="#B45309" />
+      <text x="1160" y="438" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 910 260 L 938 260 L 938 520 L 965 520" fill="none" stroke="#0D9488" stroke-width="2" />
+      <rect x="888" y="380" width="100" height="20" rx="10" fill="#FFFFFF" stroke="#0D9488" stroke-width="1.2" filter="url(#card-shadow)" />
+      <text x="938" y="394" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.2" font-weight="700" fill="#0D9488">
+        1 : N (Pengajar)
+      </text>
+      <circle cx="918" cy="260" r="8" fill="#0F172A" />
+      <text x="918" y="263" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="955" cy="520" r="8" fill="#0D9488" />
+      <text x="955" y="523" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 1610 410 L 1610 580" fill="none" stroke="#DC2626" stroke-width="2" />
+      <rect x="1550" y="485" width="120" height="20" rx="10" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.2" filter="url(#card-shadow)" />
+      <text x="1610" y="499" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#DC2626">
+        1 : N (Log Absen Siswa)
+      </text>
+      <circle cx="1610" cy="425" r="8" fill="#0F172A" />
+      <text x="1610" y="428" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="1610" cy="565" r="8" fill="#DC2626" />
+      <text x="1610" y="568" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+    </g>
+    
+    <g class="relationship-line">
+      <path d="M 250 140 L 250 115 L 1610 115 L 1610 140" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="5,4" />
+      <rect x="890" y="105" width="130" height="20" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.2" filter="url(#card-shadow)" />
+      <text x="955" y="119" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#2563EB">
+        1 : 1 (Akun Login Siswa)
+      </text>
+      <circle cx="250" cy="128" r="8" fill="#0F172A" />
+      <text x="250" y="131" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+      <circle cx="1610" cy="128" r="8" fill="#2563EB" />
+      <text x="1610" y="131" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+    </g>
+    
+    <g id="bottom_legend">
+      <rect x="50" y="920" width="1760" height="300" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#card-shadow)" />
+      
+      <rect x="50" y="920" width="1760" height="38" rx="10" fill="#F1F5F9" />
+      <text x="75" y="944" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="12" font-weight="800" fill="#0F172A">
+        📌 PANDUAN NOTASI &amp; KAMUS BASIS DATA (MARIADB INNODB RELATIONAL RULES)
+      </text>
+
+      <!-- Sub Column 1: Notasi Kunci -->
+      <g transform="translate(75, 975)">
+        <text x="0" y="0" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="700" fill="#0284C7">1. Notasi Atribut &amp; Kunci:</text>
+        
+        <rect x="0" y="12" width="28" height="16" rx="3" fill="#0284C7" />
+        <text x="14" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#FFFFFF">PK</text>
+        <text x="36" y="24" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#334155">Primary Key (Kunci Utama unik yang tidak boleh duplikat dan NOT NULL)</text>
+        
+        <rect x="0" y="38" width="28" height="16" rx="3" fill="#D97706" />
+        <text x="14" y="50" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#FFFFFF">FK</text>
+        <text x="36" y="50" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#334155">Foreign Key (Kunci Tamu penghubung relasi integritas antar-tabel)</text>
+        
+        <rect x="0" y="64" width="28" height="16" rx="3" fill="#10B981" />
+        <text x="14" y="76" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#FFFFFF">UQ</text>
+        <text x="36" y="76" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#334155">Unique Constraint (Nilai kolom harus unik seperti NIS, NIP, Barcode ID)</text>
+
+        <rect x="0" y="90" width="28" height="16" rx="3" fill="#64748B" />
+        <text x="14" y="102" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="bold" fill="#FFFFFF">IDX</text>
+        <text x="36" y="102" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#334155">B-Tree Index (Pengindeksan performa tinggi untuk pencarian filter tanggal &amp; user)</text>
+      </g>
+
+      <!-- Sub Column 2: Aturan Kardinalitas -->
+      <g transform="translate(630, 975)">
+        <text x="0" y="0" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="700" fill="#0284C7">2. Kardinalitas Relasi Sistem:</text>
+        
+        <circle cx="10" cy="20" r="8" fill="#0F172A" />
+        <text x="10" y="23" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+        <line x1="22" y1="20" x2="48" y2="20" stroke="#0284C7" stroke-width="2" />
+        <circle cx="60" cy="20" r="8" fill="#0284C7" />
+        <text x="60" y="23" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+        <text x="78" y="24" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#334155">One-to-One: Satu entitas hanya berpasangan tepat dengan satu entitas lain (users ke guru/siswa)</text>
+
+        <circle cx="10" cy="50" r="8" fill="#0F172A" />
+        <text x="10" y="53" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">1</text>
+        <line x1="22" y1="50" x2="48" y2="50" stroke="#DC2626" stroke-width="2" />
+        <circle cx="60" cy="50" r="8" fill="#DC2626" />
+        <text x="60" y="53" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#FFF">N</text>
+        <text x="78" y="54" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="600" fill="#334155">One-to-Many: Satu baris entitas induk memiliki banyak baris di entitas anak (kelas ke siswa, siswa ke absensi)</text>
+
+        <text x="0" y="86" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="700" fill="#D97706">Integritas Referensial (Referential Actions):</text>
+        <text x="0" y="104" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.2" font-weight="500" fill="#475569">
+          • ON DELETE CASCADE: Jika data induk siswa/guru/user dihapus, log absensi &amp; chat otomatis terhapus bersih.
+        </text>
+        <text x="0" y="122" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.2" font-weight="500" fill="#475569">
+          • ON DELETE SET NULL: Jika akun login dihapus, riwayat profil guru/siswa tetap tersimpan dengan user_id NULL.
+        </text>
+      </g>
+
+      <!-- Sub Column 3: Alur Kueri Presensi & AI RAG -->
+      <g transform="translate(1240, 975)">
+        <text x="0" y="0" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="700" fill="#0284C7">3. Integrasi Sistem Berjalan:</text>
+        
+        <rect x="0" y="10" width="530" height="110" rx="6" fill="#F8FAFC" stroke="#E2E8F0" />
+        <text x="14" y="28" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#0F172A">
+          📸 Kueri Scan QR Presensi:
+        </text>
+        <text x="14" y="44" font-family="'JetBrains Mono', monospace" font-size="8.8" font-weight="500" fill="#0369A1">
+          SELECT * FROM siswa WHERE barcode_id = :code LIMIT 1
+        </text>
+        <text x="14" y="62" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9" font-weight="600" fill="#059669">
+          → Jam &lt;= 07:00:00: status='hadir' | Jam &gt; 07:00:00: status='terlambat'
+        </text>
+        <text x="14" y="82" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="9.5" font-weight="700" fill="#9333EA">
+          🤖 Kueri AI Live Database Context (RAG):
+        </text>
+        <text x="14" y="98" font-family="'JetBrains Mono', monospace" font-size="8.8" font-weight="500" fill="#6B21A8">
+          SELECT COUNT(*), status FROM absensi_siswa WHERE siswa_id = :id
+        </text>
+      </g>
+
+      <!-- Signature Footer -->
+      <rect x="50" y="1186" width="1760" height="34" rx="0" fill="#0F172A" />
+      <text x="75" y="1207" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="600" fill="#94A3B8">
+        Arsitektur Database: MariaDB 10.4+ / MySQL 8.0 • Engine: InnoDB ACID-Compliant • Charset: utf8mb4_general_ci
+      </text>
+      <text x="1785" y="1207" text-anchor="end" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10" font-weight="700" fill="#38BDF8">
+        SMK NU WARGABINANGUN — ERD DIAGRAM v2.2
+      </text>
+    </g>
+    
+    </svg>
