@@ -4,4 +4,7 @@ tmp_chatbot_cookie.txt
 *.log
 .vscode/
 .idea/
-
+/vendor/
+composer.phar
+.phpunit.cache/
+.phpunit.result.cache

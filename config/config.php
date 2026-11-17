@@ -25,16 +25,28 @@ function env($key, $default = null) {
     return $value;
 }
 
-define('BASEURL', env('BASEURL', 'http://localhost/sistemabsensi/public'));
+if (!defined('BASEURL')) {
+    define('BASEURL', env('BASEURL', 'http://localhost/sistemabsensi/public'));
+}
 
 // DB Constants
-define('DB_HOST', env('DB_HOST', 'localhost'));
-define('DB_USER', env('DB_USER', 'root'));
-define('DB_PASS', env('DB_PASS', ''));
-define('DB_NAME', env('DB_NAME', 'db_sistemabsensi'));
+if (!defined('DB_HOST')) {
+    define('DB_HOST', env('DB_HOST', 'localhost'));
+}
+if (!defined('DB_USER')) {
+    define('DB_USER', env('DB_USER', 'root'));
+}
+if (!defined('DB_PASS')) {
+    define('DB_PASS', env('DB_PASS', ''));
+}
+if (!defined('DB_NAME')) {
+    define('DB_NAME', env('DB_NAME', 'db_sistemabsensi'));
+}
 
 // AI Config
-define('AI_API_KEY', env('AI_API_KEY', ''));
+if (!defined('AI_API_KEY')) {
+    define('AI_API_KEY', env('AI_API_KEY', ''));
+}
 
 // Telegram Bot Config (@AbsensiSmkNuBot)
 if (!defined('TELEGRAM_BOT_TOKEN')) {
