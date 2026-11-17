@@ -1,5 +1,10 @@
 # Sistem Absensi Sekolah Terintegrasi
 
+[![CI Sistem Absensi SMK NU WARGABINANGUN](https://github.com/virandhatiara/Project-RPL-sistemabsensiQR/actions/workflows/ci.yml/badge.svg)](https://github.com/virandhatiara/Project-RPL-sistemabsensiQR/actions/workflows/ci.yml)
+![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-blue.svg)
+![PHPUnit](https://img.shields.io/badge/PHPUnit-10.5-green.svg)
+![Status](https://img.shields.io/badge/CI%2FCD-Passing-brightgreen.svg)
+
 Sistem Absensi Sekolah adalah aplikasi berbasis web (PHP MVC) yang dirancang untuk mendigitalisasi dan mempermudah proses pencatatan kehadiran siswa dan guru. Sistem ini menggunakan teknologi pindai (scan) barcode/QR Code melalui kamera perangkat (laptop/smartphone) maupun scanner USB fisik. 
 
 Selain fitur utama absensi, sistem ini dilengkapi dengan **Dashboard Dinamis**, **Sistem Pelaporan**, serta **AI Helpdesk Chatbot** pintar untuk membantu pengguna.
@@ -112,6 +117,37 @@ Dokumentasi teknis dan perancangan sistem telah disertakan secara lengkap:
 - **UML Use Case Diagram**: [`USE_CASE.md`](./USE_CASE.md) & [`use_case_diagram.html`](./use_case_diagram.html)
 - **UML Activity Diagram**: [`ACTIVITY_DIAGRAM.md`](./ACTIVITY_DIAGRAM.md) & [`activity_diagram.html`](./activity_diagram.html)
 - **Script Presentasi Video**: [`SCRIPT_VIDEO_PRESENTASI.md`](./SCRIPT_VIDEO_PRESENTASI.md)
+
+---
+
+## 🧪 Pengujian Otomatis & CI/CD Pipeline (GitHub Actions)
+
+Project ini telah menerapkan integrasi berkelanjutan (**Continuous Integration / CI**) menggunakan **GitHub Actions** dan framework pengujian **PHPUnit 10**:
+
+### 1. Cara Menjalankan Pengujian Lokal (Local Unit Test)
+Cukup jalankan script batch otomatis di terminal:
+```bash
+.\test.bat
+```
+Atau menggunakan PHP CLI secara manual:
+```bash
+C:\xampp\php\php.exe vendor/bin/phpunit --colors=always --testdox
+```
+
+### 2. Cakupan Pengujian Unit (Unit Test Suites)
+- **`AttendanceRulesTest`**: Memverifikasi logika bisnis batas waktu (cutoff 07:00 WIB) status `hadir` vs `terlambat`, kalkulasi selisih menit, dan proteksi cooldown 10 menit presensi guru.
+- **`CsrfTest`**: Memverifikasi pembuatan token anti-CSRF berkekuatan 64 karakter heksadesimal serta validasi proteksi form POST.
+- **`SecurityHelperTest`**: Memverifikasi sanitasi input terhadap serangan XSS (Cross-Site Scripting), escaping tanda petik, dan null safety.
+- **`FlasherTest`**: Memverifikasi manajemen flash message session dan rendering komponen alert bootstrap.
+- **`ConfigTest`**: Memverifikasi fungsi parsing environment `env()` dan konstanta keamanan sistem tanpa kredensial hardcoded.
+
+### 3. Pipeline Otomatis GitHub Actions (`.github/workflows/ci.yml`)
+Setiap kali ada `push` atau `pull request` ke repository GitHub, workflow akan otomatis:
+1. Menyiapkan environment Ubuntu dengan PHP 8.2 & ekstensi pendukung.
+2. Memvalidasi integritas `composer.json` dan `composer.lock`.
+3. Memeriksa sintaks seluruh file PHP aplikasi (*PHP Syntax Lint*).
+4. Melakukan caching dependensi Composer untuk mempercepat proses build.
+5. Menjalankan seluruh pengujian PHPUnit secara otomatis hingga menghasilkan status **Success (Hijau)**.
 
 ---
 *Dikembangkan dengan 🩵 untuk Digitalisasi Sekolah SMK NU WARGABINANGUN.*
